@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_background"
+    tools:context="tk.httpksfdev.todo.AddEntry">
+
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:hint="@string/hint_text"
+        android:imeOptions="actionDone"
+        android:inputType="textCapSentences"
+        android:textColor="@color/edit_text_color"
+        android:textStyle="italic" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/editText"
+        android:layout_margin="16dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/editText"
+            android:layout_below="@+id/editText"
+            android:text="Priority: "
+            android:textColor="@color/text_view_color"
+            android:textSize="18sp"
+            android:textStyle="bold|italic" />
+
+
+        <RadioGroup
+            android:id="@+id/radioSex"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editText"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/textView2"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radio1"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="true"
+                android:onClick="onPriorityChanged"
+                android:text="High"
+                android:textColor="@color/priority_1"
+                android:textStyle="bold" />
+
+            <RadioButton
+                android:id="@+id/radio2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="onPriorityChanged"
+                android:text="Medium"
+                android:textColor="@color/priority_2"
+                android:textStyle="bold" />
+
+            <RadioButton
+                android:id="@+id/radio3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="onPriorityChanged"
+                android:text="Low"
+                android:textColor="@color/priority_3"
+                android:textStyle="bold" />
+
+        </RadioGroup>
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/editText"
+        android:layout_below="@+id/linearLayout"
+        android:text="Description: "
+        android:textColor="@color/text_view_color"
+        android:textSize="18sp"
+        android:textStyle="bold|italic" />
+
+
+    <EditText
+        android:id="@+id/editTextDesc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView3"
+        android:layout_margin="8dp"
+        android:background="@color/edit_text_desc_back"
+        android:gravity="start"
+        android:hint="@string/lorem_ipsum_text"
+        android:inputType="textMultiLine|textCapSentences"
+        android:minHeight="200dp"
+        android:padding="4dp"
+        android:textColor="@color/edit_text_text_color"
+        android:textStyle="italic" />
+
+    <Button
+        android:id="@+id/button_add"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:background="@color/colorAccent"
+        android:onClick="onAddClicked"
+        android:text="Add :D" />
+
+
+</RelativeLayout>

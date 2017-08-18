@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#78909c</color>
+    <color name="colorPrimaryDark">#546e7a</color>
+    <color name="colorAccent">#2f85ab</color>
+
+    <item name="main_background" type="color">#90a4ae</item>
+    <item name="floating_button_background" type="color">#ff006a</item>
+    <item name="finished_text_background" type="color">#14000000</item>
+
+    <item name="priority_1" type="color">#c8ea2d2d</item>
+    <item name="priority_2" type="color">#ffa726</item>
+    <item name="priority_3" type="color">#c8ffff00</item>
+    <item name="priority_5" type="color">#2f85ab</item>
+
+    <item name="todo_text_color" type="color">#ffffff</item>
+    <item name="todo_old_text_color" type="color">#c6c6c6</item>
+
+    <item name="edit_text_color" type="color">#fafafa</item>
+    <item name="text_view_color" type="color">#c6c6c6</item>
+
+
+    <item name="edit_text_text_color" type="color">#e1e1e1</item>
+    <item name="edit_text_desc_back" type="color">#14000000</item>
+
+</resources>
