@@ -12,7 +12,7 @@ ToDo / Note taking app.
 ~ Swipe active item to dismiss it
 ~ Swipe done item back to active
 ~ Widget for active ToDos 
-
+ 
 
 ##Soon
 ~ Widget for active Notes
