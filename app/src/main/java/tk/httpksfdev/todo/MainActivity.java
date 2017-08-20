@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.MergeCursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
@@ -80,30 +81,61 @@ public class MainActivity extends AppCompatActivity implements
                     final String desc = cursor.getString(cursor.getColumnIndex(ToDoContract.ToDoEntryOld.COLUMN_DESC));
                     final int priority = cursor.getInt(cursor.getColumnIndex(ToDoContract.ToDoEntryOld.COLUMN_PRIORITY));
 
-                    new AlertDialog.Builder(mContext, android.R.style.Theme_Material_Dialog_NoActionBar)
-                            .setTitle("\t" + name)
-                            .setMessage(desc)
-                            .setPositiveButton("Cancel", null)
-                            .setNegativeButton("Move to active pool", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    //add to active ToDos
-                                    ContentValues cv = new ContentValues();
-                                    cv.put(ToDoContract.ToDoEntry.COLUMN_INFO, name);
-                                    cv.put(ToDoContract.ToDoEntry.COLUMN_DESC, desc);
-                                    cv.put(ToDoContract.ToDoEntry.COLUMN_PRIORITY, priority);
-                                    getContentResolver().insert(ToDoContract.ToDoEntry.CONTENT_URI, cv);
+                    //check API level
+                    if(Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT){
+                        new AlertDialog.Builder(mContext, android.R.style.Theme_Material_Dialog_NoActionBar)
+                                .setTitle("\t" + name)
+                                .setMessage(desc)
+                                .setPositiveButton("Cancel", null)
+                                .setNegativeButton("Move to active pool", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        //add to active ToDos
+                                        ContentValues cv = new ContentValues();
+                                        cv.put(ToDoContract.ToDoEntry.COLUMN_INFO, name);
+                                        cv.put(ToDoContract.ToDoEntry.COLUMN_DESC, desc);
+                                        cv.put(ToDoContract.ToDoEntry.COLUMN_PRIORITY, priority);
+                                        getContentResolver().insert(ToDoContract.ToDoEntry.CONTENT_URI, cv);
 
-                                    //remove from ToDoOld
-                                    getContentResolver().delete(uriFinal, null, null);
+                                        //remove from ToDoOld
+                                        getContentResolver().delete(uriFinal, null, null);
 
-                                    //notify loader
-                                    getSupportLoaderManager().restartLoader(LOADER_ID, null, MainActivity.this);
-                                    //update widget
-                                    WidgetUtils.updateDataWidgetToDo(getApplicationContext());
-                                }
-                            })
-                            .show();
+                                        //notify loader
+                                        getSupportLoaderManager().restartLoader(LOADER_ID, null, MainActivity.this);
+                                        //update widget
+                                        WidgetUtils.updateDataWidgetToDo(getApplicationContext());
+                                    }
+                                })
+                                .show();
+                    } else{
+                        //doesn't support dark theme :|
+                        new AlertDialog.Builder(mContext)
+                                .setTitle("\t" + name)
+                                .setMessage(desc)
+                                .setPositiveButton("Cancel", null)
+                                .setNegativeButton("Move to active pool", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        //add to active ToDos
+                                        ContentValues cv = new ContentValues();
+                                        cv.put(ToDoContract.ToDoEntry.COLUMN_INFO, name);
+                                        cv.put(ToDoContract.ToDoEntry.COLUMN_DESC, desc);
+                                        cv.put(ToDoContract.ToDoEntry.COLUMN_PRIORITY, priority);
+                                        getContentResolver().insert(ToDoContract.ToDoEntry.CONTENT_URI, cv);
+
+                                        //remove from ToDoOld
+                                        getContentResolver().delete(uriFinal, null, null);
+
+                                        //notify loader
+                                        getSupportLoaderManager().restartLoader(LOADER_ID, null, MainActivity.this);
+                                        //update widget
+                                        WidgetUtils.updateDataWidgetToDo(getApplicationContext());
+                                    }
+                                })
+                                .show();
+                    }
+
+
                 }
                 getSupportLoaderManager().restartLoader(LOADER_ID, null, MainActivity.this);
                 //update widget
@@ -127,7 +159,6 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public Loader<MergeCursor> onCreateLoader(final int id, Bundle args) {
         return new AsyncTaskLoader<MergeCursor>(this) {
-
             MergeCursor mData = null;
 
             @Override
@@ -210,17 +241,35 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_NoActionBar)
-                .setTitle("\tAbout")
-                .setMessage("Created by: Petar Suvajac")
-                .setPositiveButton("Ok", null)
-                .setNegativeButton("Send email", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        sendMeEmail();
-                    }
-                })
-                .show();
+        //check API level
+        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT){
+            new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_NoActionBar)
+                    .setTitle("\tAbout")
+                    .setMessage("Created by: Petar Suvajac")
+                    .setPositiveButton("Ok", null)
+                    .setNegativeButton("Send email", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            sendMeEmail();
+                        }
+                    })
+                    .show();
+        } else{
+            //doesn't support cool black theme :|
+            new AlertDialog.Builder(this)
+                    .setTitle("\tAbout")
+                    .setMessage("Created by: Petar Suvajac")
+                    .setPositiveButton("Ok", null)
+                    .setNegativeButton("Send email", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            sendMeEmail();
+                        }
+                    })
+                    .show();
+        }
+
+
 
         return true;
     }
