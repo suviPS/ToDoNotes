@@ -9,31 +9,30 @@
 
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/editentry_editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:hint="@string/hint_text"
         android:imeOptions="actionDone"
         android:inputType="textCapSentences"
         android:textColor="@color/edit_text_color"
         android:textStyle="italic" />
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/editentry_linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/editText"
+        android:layout_below="@+id/editentry_editText"
         android:layout_margin="16dp"
         android:gravity="center"
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/editentry_textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/editText"
+            android:layout_alignStart="@+id/editentry_editText"
             android:layout_below="@+id/editText"
             android:text="Priority: "
             android:textColor="@color/text_view_color"
@@ -42,17 +41,17 @@
 
 
         <RadioGroup
-            android:id="@+id/radioSex"
+            android:id="@+id/editentry_radioSex"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/editText"
+            android:layout_below="@+id/editentry_editText"
             android:layout_marginRight="16dp"
             android:layout_marginStart="10dp"
-            android:layout_toEndOf="@+id/textView2"
+            android:layout_toEndOf="@+id/editentry_textView2"
             android:orientation="horizontal">
 
             <RadioButton
-                android:id="@+id/radio1"
+                android:id="@+id/editentry_radio1"
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -64,7 +63,7 @@
                 android:textStyle="bold" />
 
             <RadioButton
-                android:id="@+id/radio2"
+                android:id="@+id/editentry_radio2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -74,7 +73,7 @@
                 android:textStyle="bold" />
 
             <RadioButton
-                android:id="@+id/radio3"
+                android:id="@+id/editentry_radio3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -89,11 +88,11 @@
 
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/editentry_textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/editText"
-        android:layout_below="@+id/linearLayout"
+        android:layout_alignStart="@+id/editentry_editText"
+        android:layout_below="@+id/editentry_linearLayout"
         android:text="Description: "
         android:textColor="@color/text_view_color"
         android:textSize="18sp"
@@ -101,29 +100,29 @@
 
 
     <EditText
-        android:id="@+id/editTextDesc"
+        android:id="@+id/editentry_editTextDesc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView3"
+        android:layout_below="@+id/editentry_textView3"
         android:layout_margin="8dp"
         android:background="@color/edit_text_desc_back"
         android:gravity="start"
-        android:hint="@string/lorem_ipsum_text"
         android:inputType="textMultiLine|textCapSentences"
         android:minHeight="200dp"
         android:padding="4dp"
         android:textColor="@color/edit_text_text_color"
         android:textStyle="italic" />
 
+
     <Button
-        android:id="@+id/button_add"
+        android:id="@+id/editentry_button_add"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
         android:background="@color/colorAccent"
-        android:onClick="onAddClicked"
-        android:text="Add :D" />
+        android:onClick="onSaveButton"
+        android:text="Save" />
 
 
 </RelativeLayout>

@@ -23,4 +23,13 @@
     <item name="edit_text_text_color" type="color">#e1e1e1</item>
     <item name="edit_text_desc_back" type="color">#14000000</item>
 
+
+    <!-- To Do widget -->
+    <item name="widget_todo_toolbar_background" type="color">#465c97</item>
+    <item name="widget_todo_listview_background" type="color">#38000000</item>
+    <item name="widget_todo_text" type="color">#b6c3e7</item>
+
+    <item name="widget_todo_item_text" type="color">#ececec</item>
+    <item name="widget_todo_item_background" type="color">#90a4ae</item>
+
 </resources>

@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import tk.httpksfdev.todo.data.ToDoContract;
+import tk.httpksfdev.todo.widgets.WidgetUtils;
 
 import static tk.httpksfdev.todo.CustomCursorAdapter.FINISHED_ADD;
 
@@ -65,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements
                     uri = uri.buildUpon().appendPath(stringId).build();
                     getContentResolver().delete(uri, null, null);
 
+
                 } else {
                     final int idOld = id - FINISHED_ADD;
                     String stringId = Integer.toString(idOld);
@@ -97,11 +99,15 @@ public class MainActivity extends AppCompatActivity implements
 
                                     //notify loader
                                     getSupportLoaderManager().restartLoader(LOADER_ID, null, MainActivity.this);
+                                    //update widget
+                                    WidgetUtils.updateDataWidgetToDo(getApplicationContext());
                                 }
                             })
                             .show();
                 }
                 getSupportLoaderManager().restartLoader(LOADER_ID, null, MainActivity.this);
+                //update widget
+                WidgetUtils.updateDataWidgetToDo(getApplicationContext());
             }
         }).attachToRecyclerView(recyclerView);
 
@@ -109,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements
         findViewById(R.id.floating_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), AddEntry.class);
+                Intent intent = new Intent(getApplicationContext(), AddEntryActivity.class);
                 startActivity(intent);
             }
         });
@@ -138,10 +144,10 @@ public class MainActivity extends AppCompatActivity implements
             @Override
             public MergeCursor loadInBackground() {
                 try{
-                    //return query from DB for new and old entries
+                    String whereClause = null;
                             Cursor toDo =  getContentResolver().query(ToDoContract.ToDoEntry.CONTENT_URI,
                                     null,
-                                    null,
+                                    whereClause,
                                     null,
                                     ToDoContract.ToDoEntry.COLUMN_PRIORITY);
                             Cursor toDoOld = getContentResolver().query(ToDoContract.ToDoEntryOld.CONTENT_URI_OLD,

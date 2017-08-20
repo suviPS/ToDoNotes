@@ -8,6 +8,38 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+
+        <receiver
+            android:name=".widgets.ToDoWidgetProvider"
+            android:label="@string/widget_todo_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/to_do_widget_info" />
+        </receiver>
+
+
+
+        <provider
+            android:name=".data.ToDoContentProvider"
+            android:authorities="tk.httpksfdev.todo.data"
+            android:exported="true" />
+
+
+        <service
+            android:name=".widgets.ToDoListViewService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+        <service
+            android:name=".widgets.ToDoClickIntentService"
+            android:exported="true" />
+
+
+
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -15,15 +47,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".AddEntry"/>
-
-
-
-        <provider
-            android:name=".data.ToDoContentProvider"
-            android:authorities="tk.httpksfdev.todo.data"
-            android:exported="false" />
+        <activity android:name=".AddEntryActivity" />
+        <activity android:name=".EditEntryActivity"/>
 
     </application>
 

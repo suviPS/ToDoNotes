@@ -218,9 +218,40 @@ public class ToDoContentProvider extends ContentProvider {
             return false;
     }
 
+
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+        final SQLiteDatabase db = dbHelper.getWritableDatabase();
+        int match = mUriMatcher.match(uri);
+        int num = -1;
+
+        switch (match){
+            case TASK:
+                break;
+            case TASK_WITH_ID:
+                String id = uri.getPathSegments().get(1);
+                String mSelection = "_id=?";
+                String[] mSelectionArgs = new String[]{id};
+
+                num = db.update(TABLE_NAME,
+                        values,
+                        mSelection,
+                        mSelectionArgs);
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+
+        }
+
+        //notify resolver
+        try{
+            getContext().getContentResolver().notifyChange(uri, null);
+        } catch (NullPointerException e){
+            e.printStackTrace();
+        }
+
+
+        return num;
     }
 
     @Nullable

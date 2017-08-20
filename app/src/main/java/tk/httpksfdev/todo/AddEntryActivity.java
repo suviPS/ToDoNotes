@@ -12,8 +12,9 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 
 import tk.httpksfdev.todo.data.ToDoContract;
+import tk.httpksfdev.todo.widgets.WidgetUtils;
 
-public class AddEntry extends AppCompatActivity {
+public class AddEntryActivity extends AppCompatActivity {
 
     private EditText editTextInfo;
     private EditText editTextDesc;
@@ -66,21 +67,23 @@ public class AddEntry extends AppCompatActivity {
 
 
     public void onAddClicked(View v){
-        String input = ((EditText)findViewById(R.id.editText)).getText().toString();
+        String input = editTextInfo.getText().toString();
 
         if(input.length() == 0)
             return;
 
         ContentValues cv = new ContentValues();
         cv.put(ToDoContract.ToDoEntry.COLUMN_INFO, input);
+        cv.put(ToDoContract.ToDoEntry.COLUMN_DESC, editTextDesc.getText().toString().trim());
         cv.put(ToDoContract.ToDoEntry.COLUMN_PRIORITY, mPriority);
-        //" ~ " + text form that editText
-        cv.put(ToDoContract.ToDoEntry.COLUMN_DESC, " ~ " + editTextDesc.getText().toString().trim());
 
         Uri uri = getContentResolver().insert(ToDoContract.ToDoEntry.CONTENT_URI, cv);
 //        if(uri != null){
 //            Toast.makeText(this, "Added: " + uri.toString(), Toast.LENGTH_SHORT).show();
 //        }
+
+        //update widget
+        WidgetUtils.updateDataWidgetToDo(getApplicationContext());
 
         finish();
     }

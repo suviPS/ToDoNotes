@@ -1,10 +1,10 @@
 package tk.httpksfdev.todo;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -200,19 +200,13 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    //start EditEntryActivity with right item id
                     mCursor.moveToPosition(getAdapterPosition());
-                    String name = "\t" + mCursor.getString(mCursor.getColumnIndex(ToDoContract.ToDoEntry.COLUMN_INFO));
-                    String desc = "" + mCursor.getString(mCursor.getColumnIndex(ToDoContract.ToDoEntry.COLUMN_DESC));
+                    String id = "" + mCursor.getInt(mCursor.getColumnIndex(ToDoContract.ToDoEntry._ID));
+                    Intent intent = new Intent(mContext, EditEntryActivity.class);
+                    intent.putExtra(MyUtils.EXTRA_ITEM_ID, id);
+                    mContext.startActivity(intent);
 
-                    //TODO: add option to edit content for notes
-
-                    new AlertDialog.Builder(mContext, android.R.style.Theme_Material_Dialog_NoActionBar)
-                            .setTitle(name)
-                            .setMessage(desc)
-                            .setPositiveButton("Ok", null)
-                            .show();
-
-                    //Toast.makeText(v.getContext(), "name: " + name + "Description: " + desc, Toast.LENGTH_SHORT).show();
                 }
             });
         }
