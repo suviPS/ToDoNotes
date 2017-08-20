@@ -4,19 +4,19 @@
 <img src="preview_images/todo_preview.png" width=200 align="right" />
 
 
-ToDo / Note taking app.
+ToDo / Note taking app with dark theme 
 
-##Fatures
-~ Add new ToDo / Note
-~ Edit active item
-~ Swipe active item to dismiss it
-~ Swipe done item back to active
-~ Widget for active ToDos 
+## Fatures
+~ Add new ToDo / Note <br>
+~ Edit active item <br>
+~ Swipe active item to dismiss it <br>
+~ Swipe done item back to active <br>
+~ Widget for active ToDos <br>
  
 
-##Soon
-~ Widget for active Notes
-~ Time based reminders for ToDos
+## Soon
+~ Widget for active Notes <br>
+~ Time based reminders for ToDos <br>
 
 
 ## License
