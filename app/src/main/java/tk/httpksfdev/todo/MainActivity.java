@@ -82,34 +82,14 @@ public class MainActivity extends AppCompatActivity implements
                     final int priority = cursor.getInt(cursor.getColumnIndex(ToDoContract.ToDoEntryOld.COLUMN_PRIORITY));
 
                     //check API level
-                    if(Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT){
-                        new AlertDialog.Builder(mContext, android.R.style.Theme_Material_Dialog_NoActionBar)
-                                .setTitle("\t" + name)
-                                .setMessage(desc)
-                                .setPositiveButton("Cancel", null)
-                                .setNegativeButton("Move to active pool", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        //add to active ToDos
-                                        ContentValues cv = new ContentValues();
-                                        cv.put(ToDoContract.ToDoEntry.COLUMN_INFO, name);
-                                        cv.put(ToDoContract.ToDoEntry.COLUMN_DESC, desc);
-                                        cv.put(ToDoContract.ToDoEntry.COLUMN_PRIORITY, priority);
-                                        getContentResolver().insert(ToDoContract.ToDoEntry.CONTENT_URI, cv);
-
-                                        //remove from ToDoOld
-                                        getContentResolver().delete(uriFinal, null, null);
-
-                                        //notify loader
-                                        getSupportLoaderManager().restartLoader(LOADER_ID, null, MainActivity.this);
-                                        //update widget
-                                        WidgetUtils.updateDataWidgetToDo(getApplicationContext());
-                                    }
-                                })
-                                .show();
+                    int theme = -1;
+                    if(Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
+                        theme = android.R.style.Theme_Material_Dialog_NoActionBar;
                     } else{
-                        //doesn't support dark theme :|
-                        new AlertDialog.Builder(mContext)
+                            //doesn't support cool dark theme :|
+                            theme = android.R.style.Theme_Holo_Dialog_NoActionBar;
+                    }
+                        new AlertDialog.Builder(mContext, theme)
                                 .setTitle("\t" + name)
                                 .setMessage(desc)
                                 .setPositiveButton("Cancel", null)
@@ -133,8 +113,6 @@ public class MainActivity extends AppCompatActivity implements
                                     }
                                 })
                                 .show();
-                    }
-
 
                 }
                 getSupportLoaderManager().restartLoader(LOADER_ID, null, MainActivity.this);
@@ -240,36 +218,25 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         //check API level
-        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT){
-            new AlertDialog.Builder(this, android.R.style.Theme_Material_Dialog_NoActionBar)
-                    .setTitle("\tAbout")
-                    .setMessage("Created by: Petar Suvajac")
-                    .setPositiveButton("Ok", null)
-                    .setNegativeButton("Send email", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            sendMeEmail();
-                        }
-                    })
-                    .show();
+        int theme = -1;
+        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
+            theme = android.R.style.Theme_Material_Dialog_NoActionBar;
         } else{
-            //doesn't support cool black theme :|
-            new AlertDialog.Builder(this)
-                    .setTitle("\tAbout")
-                    .setMessage("Created by: Petar Suvajac")
-                    .setPositiveButton("Ok", null)
-                    .setNegativeButton("Send email", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            sendMeEmail();
-                        }
-                    })
-                    .show();
+            //doesn't support cool dark theme :|
+            theme = android.R.style.Theme_Holo_Dialog_NoActionBar;
         }
-
-
+        new AlertDialog.Builder(this, theme)
+                .setTitle("\tAbout")
+                .setMessage("Created by: Petar Suvajac")
+                .setPositiveButton("Ok", null)
+                .setNegativeButton("Send email", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        sendMeEmail();
+                    }
+                })
+                .show();
 
         return true;
     }
