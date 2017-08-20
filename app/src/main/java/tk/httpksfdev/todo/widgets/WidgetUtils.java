@@ -7,11 +7,10 @@ import android.content.Context;
 import tk.httpksfdev.todo.R;
 
 
-
 public class WidgetUtils {
 
 
-    //refresh listview in widget
+    //refresh listview in To Do widget
     public static void updateDataWidgetToDo(Context context){
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, ToDoWidgetProvider.class));

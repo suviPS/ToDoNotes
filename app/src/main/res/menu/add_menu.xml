@@ -5,7 +5,6 @@
     <item app:showAsAction="always"
         android:id="@+id/add_menu_note"
         android:icon="@drawable/note"
-
         />
 
 </menu>

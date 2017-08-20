@@ -20,7 +20,6 @@ public class ToDoWidgetProvider extends AppWidgetProvider {
         RemoteViews views = getListViewRemoteView(context);
 
 
-
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }

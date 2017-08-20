@@ -257,7 +257,6 @@ public class ToDoContentProvider extends ContentProvider {
     @Nullable
     @Override
     public String getType(@NonNull Uri uri) {
-        //TODO: maybe move Type detection here??
         return null;
     }
 }

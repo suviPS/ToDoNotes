@@ -56,7 +56,6 @@ public class EditEntryActivity extends AppCompatActivity {
         //setUp UI
         setUpUi();
 
-
     }
 
 
@@ -104,7 +103,6 @@ public class EditEntryActivity extends AppCompatActivity {
             default:
                 //
         }
-
     }
 
     private void setUpUi(){

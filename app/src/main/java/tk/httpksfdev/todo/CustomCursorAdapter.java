@@ -19,7 +19,6 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private Cursor mCursor;
     private Context mContext;
 
-
     private static final int TYPE_TODO = 1;
     private static final int TYPE_TODO_OLD = -1;
 
@@ -36,14 +35,14 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         switch (viewType){
             case TYPE_TODO:
-                // Inflate the view_layout to a view
+                // Inflate the item_layout to a view
                 View view1 = LayoutInflater.from(mContext)
-                        .inflate(R.layout.view_layout, parent, false);
+                        .inflate(R.layout.item_layout, parent, false);
                 return new TaskViewHolder1(view1);
             case TYPE_TODO_OLD:
-                // Inflate the view_layout_old to a view
+                // Inflate the item_old_layout to a view
                 View view2 = LayoutInflater.from(mContext)
-                        .inflate(R.layout.view_layout_old, parent, false);
+                        .inflate(R.layout.item_old_layout, parent, false);
                 return new TaskViewHolder2(view2);
             default:
                 return null;
@@ -122,7 +121,7 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 
 
-    // priority circle color.
+    // priority circle color
     //P1 = red, P2 = orange, P3 = yellow, P5 = blue
     private int getPriorityColor(int priority) {
         int priorityColor = 0;

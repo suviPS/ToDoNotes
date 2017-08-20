@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -36,7 +35,6 @@ public class ToDoListViewService extends RemoteViewsService {
 
         @Override
         public void onDataSetChanged() {
-            Log.d("TAG+++", "onDataSetChanged() trigerred");
             //requery database and update views
             if(mCursor != null)
                 mCursor.close();
@@ -71,6 +69,7 @@ public class ToDoListViewService extends RemoteViewsService {
             Bundle extras = new Bundle();
             extras.putString(ToDoClickIntentService.EXTRA_TODO_ITEM_ID, id);
             extras.putString(ToDoClickIntentService.EXTRA_TODO_ITEM_INFO, info);
+
             Intent intent01 = new Intent();
             Intent intent02 = new Intent();
             intent01.putExtras(extras);
@@ -81,7 +80,6 @@ public class ToDoListViewService extends RemoteViewsService {
 
             intent02.setAction(ToDoClickIntentService.ACTION_CLICK_TODO_ITEM_DONE);
             views.setOnClickFillInIntent(R.id.widget_todo_item_imageview, intent02);
-
 
 
             return views;

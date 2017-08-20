@@ -144,10 +144,10 @@ public class MainActivity extends AppCompatActivity implements
             @Override
             public MergeCursor loadInBackground() {
                 try{
-                    String whereClause = null;
+//                    String whereClause = null;
                             Cursor toDo =  getContentResolver().query(ToDoContract.ToDoEntry.CONTENT_URI,
                                     null,
-                                    whereClause,
+                                    null,
                                     null,
                                     ToDoContract.ToDoEntry.COLUMN_PRIORITY);
                             Cursor toDoOld = getContentResolver().query(ToDoContract.ToDoEntryOld.CONTENT_URI_OLD,

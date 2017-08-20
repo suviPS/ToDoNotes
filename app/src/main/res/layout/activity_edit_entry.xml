@@ -93,7 +93,7 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/editentry_editText"
         android:layout_below="@+id/editentry_linearLayout"
-        android:text="Description: "
+        android:text="More: "
         android:textColor="@color/text_view_color"
         android:textSize="18sp"
         android:textStyle="bold|italic" />
