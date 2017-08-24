@@ -42,7 +42,7 @@ public class NoteWidget extends AppWidgetProvider {
             text = mCursor.getString(mCursor.getColumnIndex(ToDoContract.ToDoEntry.COLUMN_DESC));
             mCursor.close();
 
-            //Intent for item
+            //Intent for item desc
             Intent intent05 = new Intent(context, NoteIntentService.class);
             intent05.setAction(NoteIntentService.ACTION_CLICK_NOTE_ITEM_CLICK);
             intent05.putExtra(NoteIntentService.EXTRA_NOTE_ITEM_ID, id);
@@ -55,12 +55,13 @@ public class NoteWidget extends AppWidgetProvider {
         views.setTextViewText(R.id.widget_note_item_text, text);
 
 
-        //intents for static stuff
+        //intent for add action
         Intent intent01 = new Intent(context, NoteIntentService.class);
         intent01.setAction(NoteIntentService.ACTION_CLICK_NOTE_TOOLBAR_ADD);
         PendingIntent pendingIntent01 = PendingIntent.getService(context, 0, intent01, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setOnClickPendingIntent(R.id.widget_note_toolbar_add, pendingIntent01);
 
+        //intent for chooser activity
         Intent intent02 = new Intent(context, NoteIntentService.class);
         intent02.setAction(NoteIntentService.ACTION_CLICK_NOTE_TOOLBAR_NAME);
         intent02.putExtra(NoteIntentService.EXTRA_NOTE_WIDGET_ID, appWidgetId);
@@ -81,12 +82,12 @@ public class NoteWidget extends AppWidgetProvider {
 
     @Override
     public void onEnabled(Context context) {
-        // Enter relevant functionality for when the first widget is created
+        //
     }
 
     @Override
     public void onDisabled(Context context) {
-        // Enter relevant functionality for when the last widget is disabled
+        //
     }
 }
 

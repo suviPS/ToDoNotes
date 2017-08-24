@@ -22,7 +22,7 @@ public class WidgetUtils {
     }
 
 
-    //==================================================
+    //=========================================================================================
     //[Note Widget]
 
     public static final String PREF_WIDGET_NOTE = "pref_widget_note_active_id";

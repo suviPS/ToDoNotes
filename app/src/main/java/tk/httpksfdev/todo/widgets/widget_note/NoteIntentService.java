@@ -64,8 +64,6 @@ public class NoteIntentService extends IntentService {
                     startActivity(intent03);
                 }
 
-
-
             } else{
                 //won't happend
                 Log.d("TAG+++", "Unsupported action in NoteIntentService");
