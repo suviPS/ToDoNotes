@@ -12,10 +12,10 @@ ToDo / Note taking app with dark theme
 ~ Swipe active item to dismiss it <br>
 ~ Swipe done item back to active <br>
 ~ Widget for active ToDos <br>
+~ Widget for active Notes <br>
  
 
 ## Soon
-~ Widget for active Notes <br>
 ~ Time based reminders for ToDos <br>
 
 
