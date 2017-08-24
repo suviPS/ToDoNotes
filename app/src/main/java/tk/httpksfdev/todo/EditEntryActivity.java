@@ -82,6 +82,7 @@ public class EditEntryActivity extends AppCompatActivity {
 
         //update widget
         WidgetUtils.updateDataWidgetToDo(getApplicationContext());
+        WidgetUtils.updateDataWidgetNote(getApplicationContext());
 
         finish();
     }

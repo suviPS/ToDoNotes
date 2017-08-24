@@ -10,7 +10,7 @@
 
     <item name="priority_1" type="color">#c8ea2d2d</item>
     <item name="priority_2" type="color">#ffa726</item>
-    <item name="priority_3" type="color">#c8ffff00</item>
+    <item name="priority_3" type="color">#deffeb3b</item>
     <item name="priority_5" type="color">#2f85ab</item>
 
     <item name="todo_text_color" type="color">#ffffff</item>
@@ -31,5 +31,22 @@
 
     <item name="widget_todo_item_text" type="color">#ececec</item>
     <item name="widget_todo_item_background" type="color">#90a4ae</item>
+
+    <!-- Note widget-->
+    <item name="widget_note_toolbar_background" type="color">#465c97</item>
+    <item name="widget_note_main_background" type="color">#8e000000</item>
+    <item name="widget_note_toolbar_name" type="color">#b6c3e7</item>
+    <item name="widget_note_item_text" type="color">#cccccc</item>
+
+    <item name="widget_note_chooser_background" type="color">#78909c</item>
+    <item name="widget_note_chooser_textview_background" type="color">#465c97</item>
+    <item name="widget_note_chooser_text" type="color">#c6c6c6</item>
+
+
+
+
+
+
+    <item name="color_temp" type="color">#ff5f5f</item>
 
 </resources>

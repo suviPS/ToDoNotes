@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    tools:context="tk.httpksfdev.todo.widgets.widget_note.ChooseNoteForWidgetActivity">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="50dp"
+        android:background="@color/widget_note_chooser_background">
+
+
+        <TextView
+            android:id="@+id/widget_note_textview01"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="Choose note:"
+            android:background="@color/widget_note_chooser_textview_background"
+            android:textSize="20dp"
+            android:textStyle="italic"
+            android:layout_alignParentStart="true"/>
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/widget_note_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/widget_note_textview01"/>
+
+
+    </RelativeLayout>
+
+</FrameLayout>

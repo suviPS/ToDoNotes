@@ -21,7 +21,7 @@ public class ToDoContract {
         public static final String TABLE_NAME = "mytodotable";
         public static final String TYPE = "type";
         public static final String COLUMN_PRIORITY = "priority";
-        public static final String COLUMN_INFO = "info";
+        public static final String COLUMN_INFO = "ic_info";
         public static final String COLUMN_DESC = "description";
     }
 
@@ -31,7 +31,7 @@ public class ToDoContract {
         public static final String TABLE_NAME = "mytodooldtable";
         //must be same as TYPE in ToDoEntry
         public static final String TYPE = "type";
-        public static final String COLUMN_INFO = "info";
+        public static final String COLUMN_INFO = "ic_info";
         public static final String COLUMN_PRIORITY = "priority";
         public static final String COLUMN_DESC = "description";
 

@@ -4,14 +4,17 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/list"
+        android:icon="@drawable/ic_list"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <provider
+            android:name=".data.ToDoContentProvider"
+            android:authorities="tk.httpksfdev.todo.data"
+            android:exported="true" />
 
         <receiver
-            android:name=".widgets.ToDoWidgetProvider"
+            android:name=".widgets.widget_todo.ToDoWidgetProvider"
             android:label="@string/widget_todo_name">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -21,24 +24,27 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/to_do_widget_info" />
         </receiver>
+        <receiver
+            android:name=".widgets.widget_note.NoteWidget"
+            android:label="@string/widget_note_main_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
 
-
-
-        <provider
-            android:name=".data.ToDoContentProvider"
-            android:authorities="tk.httpksfdev.todo.data"
-            android:exported="true" />
-
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/note_widget_info" />
+        </receiver>
 
         <service
-            android:name=".widgets.ToDoListViewService"
+            android:name=".widgets.widget_todo.ToDoListViewService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
         <service
-            android:name=".widgets.ToDoClickIntentService"
+            android:name=".widgets.widget_todo.ToDoClickIntentService"
             android:exported="true" />
-
-
-
+        <service
+            android:name=".widgets.widget_note.NoteIntentService"
+            android:exported="true" />
 
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -48,7 +54,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".AddEntryActivity" />
-        <activity android:name=".EditEntryActivity"/>
+        <activity android:name=".EditEntryActivity" />
+        <activity
+            android:name=".widgets.widget_note.ChooseNoteForWidgetActivity"
+            android:theme="@style/ChooseNoteForWidgetTheme"/>
 
     </application>
 

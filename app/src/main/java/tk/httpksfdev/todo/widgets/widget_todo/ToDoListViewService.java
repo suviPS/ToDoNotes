@@ -1,4 +1,4 @@
-package tk.httpksfdev.todo.widgets;
+package tk.httpksfdev.todo.widgets.widget_todo;
 
 import android.content.Context;
 import android.content.Intent;
@@ -75,7 +75,7 @@ public class ToDoListViewService extends RemoteViewsService {
             intent01.putExtras(extras);
             intent02.putExtras(extras);
 
-            intent01.setAction(ToDoClickIntentService.ACTION_CLICK_ITEM_CLICK);
+            intent01.setAction(ToDoClickIntentService.ACTION_CLICK_TODO_ITEM_CLICK);
             views.setOnClickFillInIntent(R.id.widget_todo_item_textview, intent01);
 
             intent02.setAction(ToDoClickIntentService.ACTION_CLICK_TODO_ITEM_DONE);

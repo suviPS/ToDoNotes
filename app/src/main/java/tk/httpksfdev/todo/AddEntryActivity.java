@@ -1,6 +1,7 @@
 package tk.httpksfdev.todo;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -36,6 +37,13 @@ public class AddEntryActivity extends AppCompatActivity {
         editTextInfo.setFocusableInTouchMode(true);
         editTextInfo.requestFocus();
 
+        //is new entry a note?
+        Intent intent = getIntent();
+        if(intent != null){
+            if(MyUtils.ACTION_ADD_NOTE.equals(intent.getAction()))
+                noteRequest();
+        }
+
     }
 
     @Override
@@ -47,18 +55,11 @@ public class AddEntryActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if(getSupportActionBar().getTitle().equals("ToDo")) {
             //move to new note
-            getSupportActionBar().setTitle("Note");
-            item.setIcon(R.drawable.todo);
-            mPriority = 5;
-            ((LinearLayout)findViewById(R.id.linearLayout)).setVisibility(View.GONE);
+            noteRequest();
         }
         else{
             //move to new To Do
-            getSupportActionBar().setTitle("ToDo");
-            item.setIcon(R.drawable.note);
-            mPriority = 1;
-            ((LinearLayout)findViewById(R.id.linearLayout)).setVisibility(View.VISIBLE);
-            ((RadioButton)findViewById(R.id.radio1)).setChecked(true);
+            todoRequest();
         }
         return true;
     }
@@ -82,11 +83,26 @@ public class AddEntryActivity extends AppCompatActivity {
 //            Toast.makeText(this, "Added: " + uri.toString(), Toast.LENGTH_SHORT).show();
 //        }
 
-        //update widget
+        //update To Do widgets
         WidgetUtils.updateDataWidgetToDo(getApplicationContext());
 
         finish();
     }
+
+
+    private void todoRequest(){
+        getSupportActionBar().setTitle("ToDo");
+        mPriority = 1;
+        ((LinearLayout)findViewById(R.id.linearLayout)).setVisibility(View.VISIBLE);
+        ((RadioButton)findViewById(R.id.radio1)).setChecked(true);
+    }
+
+    private void noteRequest(){
+        getSupportActionBar().setTitle("Note");
+        mPriority = 5;
+        ((LinearLayout)findViewById(R.id.linearLayout)).setVisibility(View.GONE);
+    }
+
 
     public void onPriorityChanged(View v){
         int id = v.getId();
@@ -104,6 +120,6 @@ public class AddEntryActivity extends AppCompatActivity {
             default:
                 //
         }
-
     }
+
 }

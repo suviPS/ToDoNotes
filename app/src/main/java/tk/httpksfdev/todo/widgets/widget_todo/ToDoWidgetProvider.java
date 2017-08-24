@@ -1,4 +1,4 @@
-package tk.httpksfdev.todo.widgets;
+package tk.httpksfdev.todo.widgets.widget_todo;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -10,7 +10,7 @@ import android.widget.RemoteViews;
 import tk.httpksfdev.todo.R;
 
 /**
- * Widget for To Do list
+ * Widget for To Do ic_list
  */
 public class ToDoWidgetProvider extends AppWidgetProvider {
 

@@ -1,4 +1,4 @@
-package tk.httpksfdev.todo.widgets;
+package tk.httpksfdev.todo.widgets.widget_todo;
 
 import android.app.IntentService;
 import android.content.Intent;
@@ -10,6 +10,7 @@ import tk.httpksfdev.todo.EditEntryActivity;
 import tk.httpksfdev.todo.MainActivity;
 import tk.httpksfdev.todo.MyUtils;
 import tk.httpksfdev.todo.data.ToDoContract;
+import tk.httpksfdev.todo.widgets.WidgetUtils;
 
 
 /**
@@ -21,7 +22,7 @@ public class ToDoClickIntentService extends IntentService {
     // action
     public static final String ACTION_CLICK_TODO_TOOLBAR_TODO = "tk.httpksfdev.todo.widgets.action.TOOLBAR_TODO";
     public static final String ACTION_CLICK_TODO_TOOLBAR_ADD = "tk.httpksfdev.todo.widgets.action.TOOLBAR_ADD";
-    public static final String ACTION_CLICK_ITEM_CLICK = "tk.httpksfdev.todo.widgets.action.ITEM_CLICK";
+    public static final String ACTION_CLICK_TODO_ITEM_CLICK = "tk.httpksfdev.todo.widgets.action.ITEM_CLICK";
     public static final String ACTION_CLICK_TODO_ITEM_DONE = "tk.httpksfdev.todo.widgets.action.ITEM_DONE";
 
     // params
@@ -52,7 +53,7 @@ public class ToDoClickIntentService extends IntentService {
                 tempIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(tempIntent);
 
-            } else if(ACTION_CLICK_ITEM_CLICK.equals(action)){
+            } else if(ACTION_CLICK_TODO_ITEM_CLICK.equals(action)){
                 //start editEntry activity
                 String id = intent.getStringExtra(EXTRA_TODO_ITEM_ID);
 
