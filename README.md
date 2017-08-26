@@ -17,7 +17,7 @@ ToDo / Note taking app with dark theme
  
 
 ## Soon
-~ Updates for Android O (NotificationChannels, dependencies and build version upgrades etc.) <br>
+~ Updates for Android O (NotificationChannels, dependencies and build version upgrades...) <br>
 
 
 ### Please note
