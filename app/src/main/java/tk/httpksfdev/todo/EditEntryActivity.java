@@ -1,29 +1,42 @@
 package tk.httpksfdev.todo;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.TextView;
+import android.widget.TimePicker;
+
+import java.util.Calendar;
 
 import tk.httpksfdev.todo.data.ToDoContract;
+import tk.httpksfdev.todo.notifications.MyNotificationUtil;
 import tk.httpksfdev.todo.widgets.WidgetUtils;
 
 public class EditEntryActivity extends AppCompatActivity {
 
     private EditText editTextInfo;
     private EditText editTextDesc;
+    private CheckBox reminderCheckBox;
 
     private int mId;
     private String mInfo;
     private String mDesc;
     private int mPriority;
+    private long mReminder;
 
 
     @Override
@@ -33,6 +46,7 @@ public class EditEntryActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Edit item");
         editTextInfo = (EditText)findViewById(R.id.editentry_editText);
         editTextDesc = (EditText)findViewById(R.id.editentry_editTextDesc);
+        reminderCheckBox = (CheckBox) findViewById(R.id.editentry_checkbox_notification);
 
         Intent intent = getIntent();
         if(intent == null){
@@ -51,7 +65,8 @@ public class EditEntryActivity extends AppCompatActivity {
         mId = Integer.valueOf(id);
         mInfo = mCursor.getString(mCursor.getColumnIndex(ToDoContract.ToDoEntry.COLUMN_INFO));
         mDesc = mCursor.getString(mCursor.getColumnIndex(ToDoContract.ToDoEntry.COLUMN_DESC));
-        mPriority =  mCursor.getInt(mCursor.getColumnIndex(ToDoContract.ToDoEntryOld.COLUMN_PRIORITY));
+        mPriority =  mCursor.getInt(mCursor.getColumnIndex(ToDoContract.ToDoEntry.COLUMN_PRIORITY));
+        mReminder = mCursor.getLong(mCursor.getColumnIndex(ToDoContract.ToDoEntry.COLUMN_REMINDER));
 
         //setUp UI
         setUpUi();
@@ -69,15 +84,40 @@ public class EditEntryActivity extends AppCompatActivity {
             return;
         }
 
+        if(reminderCheckBox.isChecked()){
+            //get real reminder time
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            String[] date = sp.getString(MyUtils.PREF_DATE_TEMP, "null##").split("##");
+            String[] time = sp.getString(MyUtils.PREF_TIME_TEMP, "null##").split("##");
+
+            if(date.length == 3 && time.length == 2){
+                Calendar c2 = Calendar.getInstance();
+                c2.set(Calendar.YEAR, Integer.parseInt(date[0]));
+                c2.set(Calendar.MONTH, Integer.parseInt(date[1]));
+                c2.set(Calendar.DAY_OF_MONTH, Integer.parseInt(date[2]));
+                c2.set(Calendar.HOUR_OF_DAY, Integer.parseInt(time[0]));
+                c2.set(Calendar.MINUTE, Integer.parseInt(time[1]));
+                mReminder = c2.getTimeInMillis();
+                Log.d("TAG+++", "mReminder: " + mReminder);
+            }
+        } else{
+            mReminder = -1;
+            MyNotificationUtil.cancelNotification(getApplicationContext(), ""+ mId);
+        }
+
         //update item in db
         ContentValues cv = new ContentValues();
         cv.put(ToDoContract.ToDoEntry.COLUMN_INFO, mInfo);
         cv.put(ToDoContract.ToDoEntry.COLUMN_DESC, mDesc);
         cv.put(ToDoContract.ToDoEntry.COLUMN_PRIORITY, mPriority);
+        cv.put(ToDoContract.ToDoEntry.COLUMN_REMINDER, mReminder);
 
         Uri uri = ToDoContract.ToDoEntry.CONTENT_URI.buildUpon().appendPath(""+mId).build();
         int num = getContentResolver().update(uri, cv, null, new String[]{""+mId});
         Log.d("TAG+++", "num: " + num);
+
+        //reschedule job if notification is set
+        MyNotificationUtil.scheduleNotification(getApplicationContext(), ""+mId);
 
 
         //update widget
@@ -124,5 +164,117 @@ public class EditEntryActivity extends AppCompatActivity {
                 ((LinearLayout)findViewById(R.id.editentry_linearLayout)).setVisibility(View.GONE);
                 break;
         }
+
+        if(mReminder == -1){
+            //do nothing
+        } else {
+            reminderCheckBox.setChecked(true);
+            //set reminder time from db
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(mReminder);
+
+            helperForReminderOn(calendar);
+        }
     }
+
+
+    // reminder methods
+    public void reminderCheckboxClickedEdit(View v){
+        if(reminderCheckBox.isChecked()){
+            //set reminder time from db
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(calendar.getTimeInMillis() + (1000 * 60 * 60));
+            helperForReminderOn(calendar);
+
+        } else {
+            helperForReminderOff();
+        }
+    }
+
+
+    private void helperForReminderOn(Calendar calendar){
+        //reference views
+        final TextView dataTextView = (TextView) findViewById(R.id.editentry_datapicker_textview);
+        final TextView timeTextView = (TextView) findViewById(R.id.editentry_timepicker_textview);
+        TextView atTextView = (TextView) findViewById(R.id.editentry_textview03);
+
+        //get final values from calendar instance for PickerDialogs
+        final int mYear = calendar.get(Calendar.YEAR);
+        final int mMonth = calendar.get(Calendar.MONTH);
+        final int mDay = calendar.get(Calendar.DAY_OF_MONTH);
+        final int mHour = calendar.get(Calendar.HOUR_OF_DAY);
+        final int mMinutes = calendar.get(Calendar.MINUTE);
+
+        //display textViews
+        dataTextView.setText(mDay + "/" + mMonth + "/" + mYear);
+        timeTextView.setText(mHour + ":" + mMinutes);
+
+        dataTextView.setVisibility(View.VISIBLE);
+        timeTextView.setVisibility(View.VISIBLE);
+        atTextView.setVisibility(View.VISIBLE);
+
+        //write to sp
+        String dateString = mYear + "##" + mMonth + "##" + mDay;
+        PreferenceManager.getDefaultSharedPreferences(EditEntryActivity.this).edit().putString(MyUtils.PREF_DATE_TEMP, dateString).commit();
+        String timeString = mHour + "##" + mMinutes;
+        PreferenceManager.getDefaultSharedPreferences(EditEntryActivity.this).edit().putString(MyUtils.PREF_TIME_TEMP, timeString).commit();
+
+        //add listeners for date/time changes
+        dataTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //display data picker
+                DatePickerDialog datePickerDialog = new DatePickerDialog(EditEntryActivity.this,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                                //edit textView
+                                dataTextView.setText(dayOfMonth + "/" + monthOfYear + "/" + year);
+
+                                //write to sp
+                                String dateString = year + "##" + monthOfYear + "##" + dayOfMonth;
+                                PreferenceManager.getDefaultSharedPreferences(EditEntryActivity.this).edit().putString(MyUtils.PREF_DATE_TEMP, dateString).commit();
+                            }
+                        }, mYear, mMonth, mDay);
+                datePickerDialog.show();
+            }
+        });
+
+        timeTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //display time picker
+                TimePickerDialog timePickerDialog = new TimePickerDialog(EditEntryActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        //edit textView
+                        timeTextView.setText(hourOfDay + ":" + minute);
+
+                        //write to sp
+                        String timeString = hourOfDay + "##" + minute;
+                        PreferenceManager.getDefaultSharedPreferences(EditEntryActivity.this).edit().putString(MyUtils.PREF_TIME_TEMP, timeString).commit();
+                    }
+                }, mHour, mMinutes, true);
+                timePickerDialog.show();
+            }
+        });
+    }
+
+    private void helperForReminderOff(){
+        //find views
+        TextView dataTextView = (TextView) findViewById(R.id.editentry_datapicker_textview);
+        TextView timeTextView = (TextView) findViewById(R.id.editentry_timepicker_textview);
+        TextView atTextView = (TextView) findViewById(R.id.editentry_textview03);
+
+        //hide textviews
+        dataTextView.setVisibility(View.GONE);
+        timeTextView.setVisibility(View.GONE);
+        atTextView.setVisibility(View.GONE);
+        mReminder = -1;
+    }
+
+
+
+
+
 }

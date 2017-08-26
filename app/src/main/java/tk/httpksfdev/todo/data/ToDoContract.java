@@ -23,6 +23,7 @@ public class ToDoContract {
         public static final String COLUMN_PRIORITY = "priority";
         public static final String COLUMN_INFO = "ic_info";
         public static final String COLUMN_DESC = "description";
+        public static final String COLUMN_REMINDER = "reminder";
     }
 
     //2. table for old entries

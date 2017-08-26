@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DbHelper extends SQLiteOpenHelper {
 
     public static String DATABASE_NAME = "toDoDatabase.db";
-    public static int DATABASE_VERSION = 12;
+    public static int DATABASE_VERSION = 13;
 
     //constructor calls default counstructor, null???
     public DbHelper(Context context) {
@@ -26,7 +26,8 @@ public class DbHelper extends SQLiteOpenHelper {
                 ToDoContract.ToDoEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 ToDoContract.ToDoEntry.COLUMN_INFO + " TEXT NOT NULL, "+
                 ToDoContract.ToDoEntry.COLUMN_PRIORITY + " INTEGER NOT NULL, "+
-                ToDoContract.ToDoEntry.COLUMN_DESC + " TEXT NOT NULL"+
+                ToDoContract.ToDoEntry.COLUMN_DESC + " TEXT NOT NULL, "+
+                ToDoContract.ToDoEntry.COLUMN_REMINDER + " LONG NOT NULL"+
                 ");";
 
         //execute SQL command

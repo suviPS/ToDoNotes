@@ -23,6 +23,8 @@
     <item name="edit_text_text_color" type="color">#e1e1e1</item>
     <item name="edit_text_desc_back" type="color">#14000000</item>
 
+    <item name="remind_me_color" type="color">#c6c6c6</item>
+
 
     <!-- To Do widget -->
     <item name="widget_todo_toolbar_background" type="color">#465c97</item>

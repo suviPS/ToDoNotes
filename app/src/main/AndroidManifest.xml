@@ -36,6 +36,16 @@
                 android:resource="@xml/note_widget_info" />
         </receiver>
 
+
+
+
+        <service
+            android:exported="false"
+            android:name=".notifications.NotificationJobService">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
+            </intent-filter>
+        </service>
         <service
             android:name=".widgets.widget_todo.ToDoListViewService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
@@ -46,6 +56,8 @@
             android:name=".widgets.widget_note.NoteIntentService"
             android:exported="true" />
 
+
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -53,8 +65,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddEntryActivity" />
-        <activity android:name=".EditEntryActivity" />
+        <activity
+            android:name=".AddEntryActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"
+            />
+        <activity
+            android:name=".EditEntryActivity"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|keyboardHidden"
+            />
         <activity
             android:name=".widgets.widget_note.ChooseNoteForWidgetActivity"
             android:theme="@style/ChooseNoteForWidgetTheme"/>

@@ -24,6 +24,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import tk.httpksfdev.todo.data.ToDoContract;
+import tk.httpksfdev.todo.notifications.MyNotificationUtil;
 import tk.httpksfdev.todo.widgets.WidgetUtils;
 
 import static tk.httpksfdev.todo.CustomCursorAdapter.FINISHED_ADD;
@@ -66,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements
                     Uri uri = ToDoContract.ToDoEntry.CONTENT_URI;
                     uri = uri.buildUpon().appendPath(stringId).build();
                     getContentResolver().delete(uri, null, null);
+                    MyNotificationUtil.cancelNotification(getApplicationContext(), ""+ id);
 
 
                 } else {
@@ -101,6 +103,7 @@ public class MainActivity extends AppCompatActivity implements
                                         cv.put(ToDoContract.ToDoEntry.COLUMN_INFO, name);
                                         cv.put(ToDoContract.ToDoEntry.COLUMN_DESC, desc);
                                         cv.put(ToDoContract.ToDoEntry.COLUMN_PRIORITY, priority);
+                                        cv.put(ToDoContract.ToDoEntry.COLUMN_REMINDER, -1);
                                         getContentResolver().insert(ToDoContract.ToDoEntry.CONTENT_URI, cv);
 
                                         //remove from ToDoOld

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_background"
+    android:orientation="vertical"
     tools:context="tk.httpksfdev.todo.AddEntryActivity">
 
 
@@ -12,7 +12,9 @@
         android:id="@+id/editentry_editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="6dp"
         android:imeOptions="actionDone"
         android:inputType="textCapSentences"
         android:textColor="@color/edit_text_color"
@@ -22,9 +24,9 @@
         android:id="@+id/editentry_linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/editentry_editText"
-        android:layout_margin="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="6dp"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -32,8 +34,6 @@
             android:id="@+id/editentry_textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/editentry_editText"
-            android:layout_below="@+id/editText"
             android:text="Priority: "
             android:textColor="@color/text_view_color"
             android:textSize="18sp"
@@ -44,7 +44,6 @@
             android:id="@+id/editentry_radioSex"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/editentry_editText"
             android:layout_marginRight="16dp"
             android:layout_marginStart="10dp"
             android:layout_toEndOf="@+id/editentry_textView2"
@@ -91,8 +90,7 @@
         android:id="@+id/editentry_textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/editentry_editText"
-        android:layout_below="@+id/editentry_linearLayout"
+        android:layout_marginLeft="16dp"
         android:text="More: "
         android:textColor="@color/text_view_color"
         android:textSize="18sp"
@@ -103,26 +101,86 @@
         android:id="@+id/editentry_editTextDesc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editentry_textView3"
         android:layout_margin="8dp"
         android:background="@color/edit_text_desc_back"
         android:gravity="start"
         android:inputType="textMultiLine|textCapSentences"
-        android:minHeight="200dp"
+        android:minHeight="250dp"
         android:padding="4dp"
         android:textColor="@color/edit_text_text_color"
         android:textStyle="italic" />
 
 
+    <!-- Reminder part -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <CheckBox
+            android:id="@+id/editentry_checkbox_notification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:onClick="reminderCheckboxClickedEdit"
+            android:shadowColor="@color/remind_me_color"
+            android:text="Remind me"
+            android:textColor="@color/remind_me_color"
+            android:textSize="18sp"
+            android:textStyle="bold|italic" />
+
+        <TextView
+            android:id="@+id/editentry_datapicker_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:text="current date  "
+            android:textColor="@color/colorAccent"
+            android:textSize="18sp"
+
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/editentry_textview03"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:text="at"
+            android:textColor="@color/remind_me_color"
+            android:textSize="18sp"
+            android:textStyle="bold|italic"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/editentry_timepicker_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
+            android:text="current time"
+            android:textColor="@color/colorAccent"
+            android:textSize="18sp"
+
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+
     <Button
-        android:id="@+id/editentry_button_add"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
         android:background="@color/colorAccent"
         android:onClick="onSaveButton"
         android:text="Save" />
 
 
-</RelativeLayout>
+</LinearLayout>

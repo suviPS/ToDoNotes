@@ -13,10 +13,16 @@ ToDo / Note taking app with dark theme
 ~ Swipe done item back to active <br>
 ~ Widget for active ToDos <br>
 ~ Widgets for selected Notes <br>
+~ Time based reminders (Notifications) <br>
  
 
 ## Soon
-~ Time based reminders for ToDos <br>
+~ Updates for Android O (NotificationChannels, dependencies and build version upgrades etc.) <br>
+
+
+### Please note
+Reminder feature uses Firebase JobDispatcher that: "_works on all recent versions of Android that have Google Play services installed._"
+If you don't have Google Play services installed or they are disabled, do note that reminders won't work.
 
 
 ## License
