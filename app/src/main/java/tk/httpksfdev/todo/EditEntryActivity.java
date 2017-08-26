@@ -114,7 +114,7 @@ public class EditEntryActivity extends AppCompatActivity {
 
         Uri uri = ToDoContract.ToDoEntry.CONTENT_URI.buildUpon().appendPath(""+mId).build();
         int num = getContentResolver().update(uri, cv, null, new String[]{""+mId});
-        Log.d("TAG+++", "num: " + num);
+        Log.d("TAG+++", "Num: " + num);
 
         //reschedule job if notification is set
         MyNotificationUtil.scheduleNotification(getApplicationContext(), ""+mId);

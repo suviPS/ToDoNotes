@@ -10,6 +10,7 @@ import tk.httpksfdev.todo.EditEntryActivity;
 import tk.httpksfdev.todo.MainActivity;
 import tk.httpksfdev.todo.MyUtils;
 import tk.httpksfdev.todo.data.ToDoContract;
+import tk.httpksfdev.todo.notifications.MyNotificationUtil;
 import tk.httpksfdev.todo.widgets.WidgetUtils;
 
 
@@ -70,6 +71,7 @@ public class ToDoClickIntentService extends IntentService {
                 getContentResolver().delete(uri, null, null);
 
                 WidgetUtils.updateDataWidgetToDo(getApplicationContext());
+                MyNotificationUtil.cancelNotification(getApplicationContext(), id);
             } else {
                 //won't happend
                 Log.d("TAG+++", "Unsupported action in ToDoClickIntentService");
