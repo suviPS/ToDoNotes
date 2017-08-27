@@ -6,7 +6,7 @@
 
 ToDo / Note taking app with dark theme 
 
-## Fatures
+## Features
 ~ Add new ToDo / Note <br>
 ~ Edit active item <br>
 ~ Swipe active item to dismiss it <br>
@@ -14,10 +14,11 @@ ToDo / Note taking app with dark theme
 ~ Widget for active ToDos <br>
 ~ Widgets for selected Notes <br>
 ~ Time based reminders (Notifications) <br>
+~ Supports Android O features (Notifications, ...)
  
 
 ## Soon
-~ Updates for Android O (NotificationChannels, dependencies and build version upgrades...) <br>
+~ Updates for Android O (App Shorcuts, ...) <br>
 
 
 ### Please note

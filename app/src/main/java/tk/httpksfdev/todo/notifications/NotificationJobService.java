@@ -2,13 +2,11 @@ package tk.httpksfdev.todo.notifications;
 
 import android.database.Cursor;
 import android.net.Uri;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import com.firebase.jobdispatcher.JobParameters;
 import com.firebase.jobdispatcher.JobService;
 
-import tk.httpksfdev.todo.R;
 import tk.httpksfdev.todo.data.ToDoContract;
 
 
@@ -30,24 +28,8 @@ public class NotificationJobService extends JobService {
             int priority = mCursor.getInt(mCursor.getColumnIndex(ToDoContract.ToDoEntry.COLUMN_PRIORITY));
             Log.d("TAG+++", "Info: " + info + " | Desc: " + desc + " | Priority: " + priority);
 
-            int color = -1;
-            switch (priority){
-                case 1:
-                    color = ContextCompat.getColor(getApplicationContext(), R.color.priority_1);
-                    break;
-                case 2:
-                    color = ContextCompat.getColor(getApplicationContext(), R.color.priority_2);
-                    break;
-                case 3:
-                    color = ContextCompat.getColor(getApplicationContext(), R.color.priority_3);
-                    break;
-                case 5:
-                    color = ContextCompat.getColor(getApplicationContext(), R.color.priority_5);
-                    break;
-            }
-
             //send notification
-            MyNotificationUtil.sendNotification(getApplicationContext(), Integer.valueOf(id), info, desc, color);
+            MyNotificationUtil.sendNotification(getApplicationContext(), Integer.valueOf(id), info, desc, priority);
         }
 
 

@@ -226,14 +226,20 @@ public class MainActivity extends AppCompatActivity implements
         if(Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
             theme = android.R.style.Theme_Material_Dialog_NoActionBar;
         } else{
-            //doesn't support cool dark theme :|
+            //doesn't support cool theme :|
             theme = android.R.style.Theme_Holo_Dialog_NoActionBar;
         }
         new AlertDialog.Builder(this, theme)
                 .setTitle("\tAbout")
-                .setMessage("Created by: Petar Suvajac")
+                .setMessage(getResources().getString(R.string.info_text) + "\n\nCreated by: Petar Suvajac")
                 .setPositiveButton("Ok", null)
-                .setNegativeButton("Send email", new DialogInterface.OnClickListener() {
+                .setNegativeButton("GitHub", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        goToGithub();
+                    }
+                })
+                .setNeutralButton("Send email", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         sendMeEmail();
@@ -244,7 +250,7 @@ public class MainActivity extends AppCompatActivity implements
         return true;
     }
 
-    public void sendMeEmail(){
+    private void sendMeEmail(){
         //email intent
         String mail[]={"petars38@gmail.com"};
         Intent intent = new Intent(Intent.ACTION_SENDTO);
@@ -258,5 +264,17 @@ public class MainActivity extends AppCompatActivity implements
         } else {
             Toast.makeText(this, "Mail me at: petars38@gmail.com", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void goToGithub(){
+        String gitUrl = "https://github.com/suviPS/ToDoNotes";
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(gitUrl));
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        } else {
+            Toast.makeText(getApplicationContext(), "Visit us at: " + gitUrl, Toast.LENGTH_LONG).show();
+        }
+
+
     }
 }

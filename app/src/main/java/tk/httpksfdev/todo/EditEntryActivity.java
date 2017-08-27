@@ -165,59 +165,44 @@ public class EditEntryActivity extends AppCompatActivity {
                 break;
         }
 
-        if(mReminder == -1){
-            //do nothing
-        } else {
+        //reminder setUp
+        setUpReminder();
+        if(mReminder != -1){
             reminderCheckBox.setChecked(true);
-            //set reminder time from db
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(mReminder);
-
-            helperForReminderOn(calendar);
+            reminderCheckboxClickedEdit(reminderCheckBox);
         }
+
     }
 
 
-    // reminder methods
-    public void reminderCheckboxClickedEdit(View v){
-        if(reminderCheckBox.isChecked()){
-            //set reminder time from db
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(calendar.getTimeInMillis() + (1000 * 60 * 60));
-            helperForReminderOn(calendar);
+    //reminder methods
 
-        } else {
-            helperForReminderOff();
-        }
-    }
-
-
-    private void helperForReminderOn(Calendar calendar){
-        //reference views
+    //initial stuff for reminder, should be called only once
+    private void setUpReminder(){
         final TextView dataTextView = (TextView) findViewById(R.id.editentry_datapicker_textview);
         final TextView timeTextView = (TextView) findViewById(R.id.editentry_timepicker_textview);
-        TextView atTextView = (TextView) findViewById(R.id.editentry_textview03);
 
-        //get final values from calendar instance for PickerDialogs
+        Calendar calendar = Calendar.getInstance();
+        if(mReminder != -1 && (calendar.getTimeInMillis() - mReminder) < 0){
+            calendar.setTimeInMillis(mReminder);
+        } else {
+            calendar.setTimeInMillis(calendar.getTimeInMillis() + (1000 * 60 * 60));
+        }
         final int mYear = calendar.get(Calendar.YEAR);
         final int mMonth = calendar.get(Calendar.MONTH);
         final int mDay = calendar.get(Calendar.DAY_OF_MONTH);
         final int mHour = calendar.get(Calendar.HOUR_OF_DAY);
         final int mMinutes = calendar.get(Calendar.MINUTE);
 
-        //display textViews
-        dataTextView.setText(mDay + "/" + mMonth + "/" + mYear);
-        timeTextView.setText(mHour + ":" + mMinutes);
-
-        dataTextView.setVisibility(View.VISIBLE);
-        timeTextView.setVisibility(View.VISIBLE);
-        atTextView.setVisibility(View.VISIBLE);
-
         //write to sp
         String dateString = mYear + "##" + mMonth + "##" + mDay;
         PreferenceManager.getDefaultSharedPreferences(EditEntryActivity.this).edit().putString(MyUtils.PREF_DATE_TEMP, dateString).commit();
         String timeString = mHour + "##" + mMinutes;
         PreferenceManager.getDefaultSharedPreferences(EditEntryActivity.this).edit().putString(MyUtils.PREF_TIME_TEMP, timeString).commit();
+
+        //add starting info to textViews
+        dataTextView.setText(mDay + "/" + mMonth + "/" + mYear);
+        timeTextView.setText(mHour + ":" + mMinutes);
 
         //add listeners for date/time changes
         dataTextView.setOnClickListener(new View.OnClickListener() {
@@ -260,21 +245,25 @@ public class EditEntryActivity extends AppCompatActivity {
         });
     }
 
-    private void helperForReminderOff(){
-        //find views
+    public void reminderCheckboxClickedEdit(View v){
         TextView dataTextView = (TextView) findViewById(R.id.editentry_datapicker_textview);
         TextView timeTextView = (TextView) findViewById(R.id.editentry_timepicker_textview);
         TextView atTextView = (TextView) findViewById(R.id.editentry_textview03);
 
-        //hide textviews
-        dataTextView.setVisibility(View.GONE);
-        timeTextView.setVisibility(View.GONE);
-        atTextView.setVisibility(View.GONE);
-        mReminder = -1;
+        if(reminderCheckBox.isChecked()){
+            //show textviews
+            dataTextView.setVisibility(View.VISIBLE);
+            timeTextView.setVisibility(View.VISIBLE);
+            atTextView.setVisibility(View.VISIBLE);
+
+        } else {
+            //hide textviews
+            dataTextView.setVisibility(View.GONE);
+            timeTextView.setVisibility(View.GONE);
+            atTextView.setVisibility(View.GONE);
+            mReminder = -1;
+        }
     }
-
-
-
 
 
 }

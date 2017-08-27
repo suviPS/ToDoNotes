@@ -10,7 +10,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="400dp"
         android:layout_gravity="center"
         android:layout_margin="50dp"
         android:background="@color/widget_note_chooser_background">
@@ -20,7 +20,7 @@
             android:id="@+id/widget_note_textview01"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp"
+            android:padding="10dp"
             android:text="Choose note:"
             android:background="@color/widget_note_chooser_textview_background"
             android:textSize="20dp"
@@ -31,7 +31,7 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/widget_note_recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_below="@+id/widget_note_textview01"/>
 
 

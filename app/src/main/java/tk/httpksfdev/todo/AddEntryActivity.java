@@ -60,27 +60,9 @@ public class AddEntryActivity extends AppCompatActivity {
                 noteRequest();
         }
 
+        //reminder setUp
+        setUpReminder();
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.add_menu, menu);
-        return true;
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(getSupportActionBar().getTitle().equals("ToDo")) {
-            //move to new note
-            noteRequest();
-        }
-        else{
-            //move to new To Do
-            todoRequest();
-        }
-        return true;
-    }
-
-
 
 
     public void onAddClicked(View v){
@@ -150,6 +132,110 @@ public class AddEntryActivity extends AppCompatActivity {
         ((LinearLayout)findViewById(R.id.addentry_priority_linearLayout)).setVisibility(View.GONE);
     }
 
+    //initial stuff for reminder, should be called only once
+    private void setUpReminder(){
+        final TextView dataTextView = (TextView) findViewById(R.id.addentry_datapicker_textview);
+        final TextView timeTextView = (TextView) findViewById(R.id.addentry_timepicker_textview);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(calendar.getTimeInMillis() + (1000 * 60 * 60));
+        final int mYear = calendar.get(Calendar.YEAR);
+        final int mMonth = calendar.get(Calendar.MONTH);
+        final int mDay = calendar.get(Calendar.DAY_OF_MONTH);
+        final int mHour = calendar.get(Calendar.HOUR_OF_DAY);
+        final int mMinutes = calendar.get(Calendar.MINUTE);
+
+        //write to sp
+        String dateString = mYear + "##" + mMonth + "##" + mDay;
+        PreferenceManager.getDefaultSharedPreferences(AddEntryActivity.this).edit().putString(MyUtils.PREF_DATE_TEMP, dateString).commit();
+        String timeString = mHour + "##" + mMinutes;
+        PreferenceManager.getDefaultSharedPreferences(AddEntryActivity.this).edit().putString(MyUtils.PREF_TIME_TEMP, timeString).commit();
+
+        //add starting info to textViews
+        dataTextView.setText(mDay + "/" + mMonth + "/" + mYear);
+        timeTextView.setText(mHour + ":" + mMinutes);
+
+        //add listeners for date/time changes
+        dataTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //display data picker
+                DatePickerDialog datePickerDialog = new DatePickerDialog(AddEntryActivity.this,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                                //edit textView
+                                dataTextView.setText(dayOfMonth + "/" + monthOfYear + "/" + year);
+
+                                //write to sp
+                                String dateString = year + "##" + monthOfYear + "##" + dayOfMonth;
+                                PreferenceManager.getDefaultSharedPreferences(AddEntryActivity.this).edit().putString(MyUtils.PREF_DATE_TEMP, dateString).commit();
+                            }
+                        }, mYear, mMonth, mDay);
+                datePickerDialog.show();
+            }
+        });
+
+        timeTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //display time picker
+                TimePickerDialog timePickerDialog = new TimePickerDialog(AddEntryActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        //edit textView
+                        timeTextView.setText(hourOfDay + ":" + minute);
+
+                        //write to sp
+                        String timeString = hourOfDay + "##" + minute;
+                        PreferenceManager.getDefaultSharedPreferences(AddEntryActivity.this).edit().putString(MyUtils.PREF_TIME_TEMP, timeString).commit();
+                    }
+                }, mHour, mMinutes, true);
+                timePickerDialog.show();
+            }
+        });
+    }
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.add_menu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(getSupportActionBar().getTitle().equals("ToDo")) {
+            //move to new note
+            noteRequest();
+        }
+        else{
+            //move to new To Do
+            todoRequest();
+        }
+        return true;
+    }
+
+    public void reminderCheckboxClicked(View v){
+        TextView dataTextView = (TextView) findViewById(R.id.addentry_datapicker_textview);
+        TextView timeTextView = (TextView) findViewById(R.id.addentry_timepicker_textview);
+        TextView atTextView = (TextView) findViewById(R.id.addentry_textview03);
+
+        if(reminderCheckBox.isChecked()){
+            //show textviews
+            dataTextView.setVisibility(View.VISIBLE);
+            timeTextView.setVisibility(View.VISIBLE);
+            atTextView.setVisibility(View.VISIBLE);
+
+        } else {
+            //hide textviews
+            dataTextView.setVisibility(View.GONE);
+            timeTextView.setVisibility(View.GONE);
+            atTextView.setVisibility(View.GONE);
+            mReminder = -1;
+        }
+
+    }
 
     public void onPriorityChanged(View v){
         int id = v.getId();
@@ -173,88 +259,6 @@ public class AddEntryActivity extends AppCompatActivity {
         //remove hint
         EditText et = (EditText)v;
         et.setHint("");
-    }
-
-
-    public void reminderCheckboxClicked(View v){
-        final TextView dataTextView = (TextView) findViewById(R.id.addentry_datapicker_textview);
-        final TextView timeTextView = (TextView) findViewById(R.id.addentry_timepicker_textview);
-        TextView atTextView = (TextView) findViewById(R.id.addentry_textview03);
-
-        if(reminderCheckBox.isChecked()){
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(calendar.getTimeInMillis() + (1000 * 60 * 60));
-            final int mYear = calendar.get(Calendar.YEAR);
-            final int mMonth = calendar.get(Calendar.MONTH);
-            final int mDay = calendar.get(Calendar.DAY_OF_MONTH);
-            final int mHour = calendar.get(Calendar.HOUR_OF_DAY);
-            final int mMinutes = calendar.get(Calendar.MINUTE);
-
-
-            //display textViews
-            dataTextView.setText(mDay + "/" + mMonth + "/" + mYear);
-            timeTextView.setText(mHour + ":" + mMinutes);
-
-            dataTextView.setVisibility(View.VISIBLE);
-            timeTextView.setVisibility(View.VISIBLE);
-            atTextView.setVisibility(View.VISIBLE);
-
-
-            //write to sp
-            String dateString = mYear + "##" + mMonth + "##" + mDay;
-            PreferenceManager.getDefaultSharedPreferences(AddEntryActivity.this).edit().putString(MyUtils.PREF_DATE_TEMP, dateString).commit();
-            String timeString = mHour + "##" + mMinutes;
-            PreferenceManager.getDefaultSharedPreferences(AddEntryActivity.this).edit().putString(MyUtils.PREF_TIME_TEMP, timeString).commit();
-
-
-            //add listeners for date/time changes
-            dataTextView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //display data picker
-                    DatePickerDialog datePickerDialog = new DatePickerDialog(AddEntryActivity.this,
-                            new DatePickerDialog.OnDateSetListener() {
-                                @Override
-                                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                    //edit textView
-                                    dataTextView.setText(dayOfMonth + "/" + monthOfYear + "/" + year);
-
-                                    //write to sp
-                                    String dateString = year + "##" + monthOfYear + "##" + dayOfMonth;
-                                    PreferenceManager.getDefaultSharedPreferences(AddEntryActivity.this).edit().putString(MyUtils.PREF_DATE_TEMP, dateString).commit();
-                                }
-                            }, mYear, mMonth, mDay);
-                    datePickerDialog.show();
-                }
-            });
-
-            timeTextView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //display time picker
-                    TimePickerDialog timePickerDialog = new TimePickerDialog(AddEntryActivity.this, new TimePickerDialog.OnTimeSetListener() {
-                        @Override
-                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                            //edit textView
-                            timeTextView.setText(hourOfDay + ":" + minute);
-
-                            //write to sp
-                            String timeString = hourOfDay + "##" + minute;
-                            PreferenceManager.getDefaultSharedPreferences(AddEntryActivity.this).edit().putString(MyUtils.PREF_TIME_TEMP, timeString).commit();
-                        }
-                    }, mHour, mMinutes, true);
-                    timePickerDialog.show();
-                }
-            });
-
-        } else {
-            //hide textviews
-            dataTextView.setVisibility(View.GONE);
-            timeTextView.setVisibility(View.GONE);
-            atTextView.setVisibility(View.GONE);
-            mReminder = -1;
-        }
-
     }
 
 }

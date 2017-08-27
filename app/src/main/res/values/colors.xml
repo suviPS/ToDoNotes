@@ -10,7 +10,7 @@
 
     <item name="priority_1" type="color">#c8ea2d2d</item>
     <item name="priority_2" type="color">#ffa726</item>
-    <item name="priority_3" type="color">#deffeb3b</item>
+    <item name="priority_3" type="color">#e4d339</item>
     <item name="priority_5" type="color">#2f85ab</item>
 
     <item name="todo_text_color" type="color">#ffffff</item>
