@@ -20,6 +20,7 @@ public class NoteIntentService extends IntentService {
     public static final String ACTION_CLICK_NOTE_TOOLBAR_NAME = "tk.httpksfdev.todo.widgets.action.NOTE_TOOLBAR_NAME";
     public static final String ACTION_CLICK_NOTE_TOOLBAR_ADD = "tk.httpksfdev.todo.widgets.action.NOTE_TOOLBAR_ADD";
     public static final String ACTION_CLICK_NOTE_ITEM_CLICK = "tk.httpksfdev.todo.widgets.action.NOTE_ITEM_CLICK";
+    public static final String ACTION_CLICK_NOTE_ITEM_CANCEL = "tk.httpksfdev.todo.widgets.action.NOTE_ITEM_CANCEL";
 
     // params
     public static final String EXTRA_NOTE_ITEM_ID = "tk.httpksfdev.todo.widgets.extra.NOTE_ID";
@@ -64,6 +65,8 @@ public class NoteIntentService extends IntentService {
                     startActivity(intent03);
                 }
 
+            } else if(ACTION_CLICK_NOTE_ITEM_CANCEL.equals(action)){
+                //do nothing, widget had selected entry but it's deleted now...
             } else{
                 //won't happend
                 Log.d("TAG+++", "Unsupported action in NoteIntentService");

@@ -22,14 +22,16 @@ public class NotificationJobService extends JobService {
         Uri uri = ToDoContract.ToDoEntry.CONTENT_URI.buildUpon().appendPath(id).build();
         Cursor mCursor = getContentResolver().query(uri, null, null, null, null);
         if(mCursor != null){
-            mCursor.moveToFirst();
-            String info = mCursor.getString(mCursor.getColumnIndex(ToDoContract.ToDoEntry.COLUMN_INFO));
-            String desc = mCursor.getString(mCursor.getColumnIndex(ToDoContract.ToDoEntry.COLUMN_DESC));
-            int priority = mCursor.getInt(mCursor.getColumnIndex(ToDoContract.ToDoEntry.COLUMN_PRIORITY));
-            Log.d("TAG+++", "Info: " + info + " | Desc: " + desc + " | Priority: " + priority);
+            if(mCursor.getCount() > 0){
+                mCursor.moveToFirst();
+                String info = mCursor.getString(mCursor.getColumnIndex(ToDoContract.ToDoEntry.COLUMN_INFO));
+                String desc = mCursor.getString(mCursor.getColumnIndex(ToDoContract.ToDoEntry.COLUMN_DESC));
+                int priority = mCursor.getInt(mCursor.getColumnIndex(ToDoContract.ToDoEntry.COLUMN_PRIORITY));
+                Log.d("TAG+++", "Info: " + info + " | Desc: " + desc + " | Priority: " + priority);
 
-            //send notification
-            MyNotificationUtil.sendNotification(getApplicationContext(), Integer.valueOf(id), info, desc, priority);
+                //send notification
+                MyNotificationUtil.sendNotification(getApplicationContext(), Integer.valueOf(id), info, desc, priority);
+            }
         }
 
 

@@ -70,7 +70,11 @@ public class MyNotificationUtil {
         if (mCursor == null) {
             Log.d("TAG+++", "mCursor == null, no job scheduled");
             return;
+        } else if(mCursor.getCount() == 0){
+            Log.d("TAG+++", "mCursor.getCount() == 0, no job scheduled");
+            return;
         }
+
         mCursor.moveToFirst();
         long timeInMillis = mCursor.getLong(mCursor.getColumnIndex(ToDoContract.ToDoEntry.COLUMN_REMINDER));
         timeInMillis -= Calendar.getInstance().getTimeInMillis();

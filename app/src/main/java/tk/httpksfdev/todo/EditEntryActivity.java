@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -57,11 +59,18 @@ public class EditEntryActivity extends AppCompatActivity {
         //get id from intent
         String id = intent.getStringExtra(MyUtils.EXTRA_ITEM_ID);
 
-        //query database and set data
+        //query database
         Uri uri = ToDoContract.ToDoEntry.CONTENT_URI.buildUpon().appendPath(id).build();
         Cursor mCursor = getContentResolver().query(uri, null, null, null, null);
-        mCursor.moveToFirst();
 
+        if(mCursor == null || mCursor.getCount() == 0){
+            //won't happend
+            Log.d("TAG+++", "Wrong id passed to EditEntryActivity");
+            finish();
+        }
+
+        //get data
+        mCursor.moveToFirst();
         mId = Integer.valueOf(id);
         mInfo = mCursor.getString(mCursor.getColumnIndex(ToDoContract.ToDoEntry.COLUMN_INFO));
         mDesc = mCursor.getString(mCursor.getColumnIndex(ToDoContract.ToDoEntry.COLUMN_DESC));
@@ -265,5 +274,29 @@ public class EditEntryActivity extends AppCompatActivity {
         }
     }
 
+    //menu
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.edit_menu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.edit_menu_done) {
+            //set done icon
+            item.setIcon(R.drawable.ic_done_02);
+
+            //delete item from active pool
+            Uri uri = ToDoContract.ToDoEntry.CONTENT_URI.buildUpon().appendPath(""+ mId).build();
+            getContentResolver().delete(uri, null, null);
+
+            //notify data change
+            WidgetUtils.updateDataWidgetToDo(this);
+            WidgetUtils.updateDataWidgetNote(this);
+
+            finish();
+        }
+        return true;
+    }
 
 }

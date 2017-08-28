@@ -10,7 +10,7 @@ import android.widget.RemoteViews;
 import tk.httpksfdev.todo.R;
 
 /**
- * Widget for To Do ic_list
+ * Widget for To Do
  */
 public class ToDoWidgetProvider extends AppWidgetProvider {
 

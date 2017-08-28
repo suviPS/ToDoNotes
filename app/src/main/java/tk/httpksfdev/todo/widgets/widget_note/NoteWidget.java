@@ -25,35 +25,48 @@ public class NoteWidget extends AppWidgetProvider {
         Log.d("TAG+++", "updateAppWidget() | appWidgetId: " + appWidgetId);
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.note_widget);
 
-        //set data
+        //get id and query to see is there still entry in db
         int id = PreferenceManager.getDefaultSharedPreferences(context).getInt(WidgetUtils.PREF_WIDGET_NOTE + appWidgetId, -1);
+        Uri uri = ToDoContract.ToDoEntry.CONTENT_URI.buildUpon().appendPath(""+id).build();
+        Cursor mCursor = context.getContentResolver().query(uri, null, null, null, null);
+
+
         String name = "";
         String text = "";
-        if(id == -1){
-            //wrong data
+        String itemAction = "";
+
+        if(mCursor == null){
+            //no match, wrong id
             name = context.getString(R.string.widget_note_name);
             text = context.getString(R.string.widget_note_text);
+            itemAction = NoteIntentService.ACTION_CLICK_NOTE_ITEM_CANCEL;
+            Log.d("TAG+++", "mCursor == null");
+
+        } else if(mCursor.getCount() == 0){
+            //no match, item removed
+            name = context.getString(R.string.widget_note_name);
+            text = context.getString(R.string.widget_note_text);
+            itemAction = NoteIntentService.ACTION_CLICK_NOTE_ITEM_CANCEL;
+            Log.d("TAG+++", "mCursor.getCount() == 0");
+
         } else {
-            //get from db
-            Uri uri = ToDoContract.ToDoEntry.CONTENT_URI.buildUpon().appendPath(""+id).build();
-            Cursor mCursor = context.getContentResolver().query(uri, null, null, null, null);
+            //all good
             mCursor.moveToFirst();
             name = mCursor.getString(mCursor.getColumnIndex(ToDoContract.ToDoEntry.COLUMN_INFO));
             text = mCursor.getString(mCursor.getColumnIndex(ToDoContract.ToDoEntry.COLUMN_DESC));
+            itemAction = NoteIntentService.ACTION_CLICK_NOTE_ITEM_CLICK;
             mCursor.close();
-
-            //Intent for item desc
-            Intent intent05 = new Intent(context, NoteIntentService.class);
-            intent05.setAction(NoteIntentService.ACTION_CLICK_NOTE_ITEM_CLICK);
-            intent05.putExtra(NoteIntentService.EXTRA_NOTE_ITEM_ID, id);
-            PendingIntent pendingIntent05 = PendingIntent.getService(context, appWidgetId, intent05, PendingIntent.FLAG_UPDATE_CURRENT);
-            views.setOnClickPendingIntent(R.id.widget_note_item_text, pendingIntent05);
-
         }
 
         views.setTextViewText(R.id.widget_note_toolbar_name, name);
         views.setTextViewText(R.id.widget_note_item_text, text);
 
+        //Intent for item desc
+        Intent intent05 = new Intent(context, NoteIntentService.class);
+        intent05.setAction(itemAction);
+        intent05.putExtra(NoteIntentService.EXTRA_NOTE_ITEM_ID, id);
+        PendingIntent pendingIntent05 = PendingIntent.getService(context, appWidgetId, intent05, PendingIntent.FLAG_UPDATE_CURRENT);
+        views.setOnClickPendingIntent(R.id.widget_note_item_text, pendingIntent05);
 
         //intent for add action
         Intent intent01 = new Intent(context, NoteIntentService.class);

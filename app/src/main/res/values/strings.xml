@@ -3,13 +3,19 @@
     <string name="widget_todo_name">ToDo List</string>
     <string name="widget_note_main_name">Note</string>
 
+    <!-- MainActivity -->
     <string name="info_text">This application is part of open source project and all additional informations can be found on official GitHub repository.</string>
 
+    <!-- AddEntry / EditEntry -->
     <string name="hint_text">example: Feed the cat...</string>
     <string name="lorem_ipsum_text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. </string>
 
     <!-- Note widget -->
     <string name="widget_note_name">Click me</string>
     <string name="widget_note_text">Choose Note to display...</string>
+
+    <!-- Shortcuts -->
+    <string name="shortcut_todo_label">Add ToDo</string>
+    <string name="shortcut_note_label">Add Note</string>
 
 </resources>

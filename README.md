@@ -14,11 +14,11 @@ ToDo / Note taking app with dark theme
 ~ Widget for active ToDos <br>
 ~ Widgets for selected Notes <br>
 ~ Time based reminders (Notifications) <br>
-~ Supports Android O features (Notifications, ...)
+~ Supports Android O (Notification Channels, Badges, App Shortcuts...)
  
 
 ## Soon
-~ Updates for Android O (App Shorcuts, ...) <br>
+~ // <br>
 
 
 ### Please note

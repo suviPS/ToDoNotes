@@ -113,14 +113,15 @@ public class MainActivity extends AppCompatActivity implements
                                         getSupportLoaderManager().restartLoader(LOADER_ID, null, MainActivity.this);
                                         //update widget
                                         WidgetUtils.updateDataWidgetToDo(getApplicationContext());
+                                        WidgetUtils.updateDataWidgetNote(getApplicationContext());
                                     }
                                 })
                                 .show();
-
                 }
                 getSupportLoaderManager().restartLoader(LOADER_ID, null, MainActivity.this);
                 //update widget
                 WidgetUtils.updateDataWidgetToDo(getApplicationContext());
+                WidgetUtils.updateDataWidgetNote(getApplicationContext());
             }
         }).attachToRecyclerView(recyclerView);
 
@@ -195,21 +196,17 @@ public class MainActivity extends AppCompatActivity implements
          mAdapter.swapCursor(data);
     }
 
-
     @Override
     public void onLoaderReset(Loader<MergeCursor> loader) {
             mAdapter.swapCursor(null);
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
-
         // re-queries for all tasks
         getSupportLoaderManager().restartLoader(LOADER_ID, null, this);
     }
-
 
 
 

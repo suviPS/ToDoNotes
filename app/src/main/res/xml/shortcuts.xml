@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Note -->
+    <shortcut
+        android:shortcutId="shortcut_new_note"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_note"
+        android:shortcutShortLabel="@string/shortcut_note_label">
+        <!-- Uses action defined at MyUtils.ACTION_ADD_NOTE -->
+        <intent
+            android:action="tk.httpksfdev.todo.action.ADD_NOTE"
+            android:targetPackage="tk.httpksfdev.todo"
+            android:targetClass="tk.httpksfdev.todo.AddEntryActivity" />
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+
+    <!-- To Do -->
+    <shortcut
+        android:shortcutId="shortcut_new_todo"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_todo"
+        android:shortcutShortLabel="@string/shortcut_todo_label">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="tk.httpksfdev.todo"
+            android:targetClass="tk.httpksfdev.todo.AddEntryActivity" />
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+
+</shortcuts>

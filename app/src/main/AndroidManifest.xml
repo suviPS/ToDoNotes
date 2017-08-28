@@ -65,12 +65,13 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
         </activity>
         <activity
             android:name=".AddEntryActivity"
             android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden"
-            />
+            android:configChanges="orientation|keyboardHidden"/>
         <activity
             android:name=".EditEntryActivity"
             android:screenOrientation="portrait"
