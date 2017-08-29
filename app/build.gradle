@@ -7,9 +7,9 @@ android {
         applicationId "tk.httpksfdev.todo"
         minSdkVersion 19
         targetSdkVersion 26
-        versionName '2.7'
+        versionName '2.8'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        versionCode 27
+        versionCode 28
     }
     buildTypes {
         release {
@@ -34,7 +34,9 @@ dependencies {
     compile 'com.android.support:appcompat-v7:26.0.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.0'
     compile 'com.android.support:design:26.0.1'
+    //added
     compile 'com.android.support:recyclerview-v7:26.0.1'
+    compile 'com.rengwuxian.materialedittext:library:2.1.4'
     //Firebase JobDispatcher
     compile 'com.firebase:firebase-jobdispatcher:0.8.0'
 }

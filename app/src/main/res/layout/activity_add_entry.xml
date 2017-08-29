@@ -2,23 +2,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/main_background"
     android:orientation="vertical">
 
-    <EditText
+    <com.rengwuxian.materialedittext.MaterialEditText
         android:id="@+id/addentry_editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="6dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="6dp"
         android:hint="@string/hint_text"
-        android:imeOptions="actionDone"
         android:inputType="textCapSentences"
-        android:textColor="@color/edit_text_color"
         android:textStyle="italic"
-        android:onClick="onEditTextClicked"/>
+
+        app:met_baseColor="@color/edit_text_color"
+        app:met_singleLineEllipsis="true"
+        />
+
 
     <LinearLayout
         android:id="@+id/addentry_priority_linearLayout"
@@ -90,25 +92,29 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
+        android:layout_marginBottom="0dp"
         android:text="More: "
         android:textColor="@color/text_view_color"
         android:textSize="18sp"
         android:textStyle="bold|italic" />
 
-    <EditText
+
+    <com.rengwuxian.materialedittext.MaterialEditText
         android:id="@+id/addentry_editTextDesc"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:background="@color/edit_text_desc_back"
-        android:gravity="start"
+        android:layout_height="260dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="0dp"
+        android:padding="4dp"
         android:hint="@string/lorem_ipsum_text"
         android:inputType="textMultiLine|textCapSentences"
-        android:minHeight="250dp"
-        android:padding="4dp"
-        android:textColor="@color/edit_text_text_color"
         android:textStyle="italic"
-        android:onClick="onEditTextClicked"/>
+        android:gravity="start"
+
+        app:met_baseColor="@color/edit_text_text_color"
+        app:met_floatingLabel="none"
+        />
 
 
     <!-- Reminder part -->

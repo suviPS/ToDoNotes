@@ -255,10 +255,4 @@ public class AddEntryActivity extends AppCompatActivity {
         }
     }
 
-    public void onEditTextClicked(View v){
-        //remove hint
-        EditText et = (EditText)v;
-        et.setHint("");
-    }
-
 }
