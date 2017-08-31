@@ -1,10 +1,14 @@
 # ToDoNotes [![Platform](https://img.shields.io/badge/platform-Android-green.svg)](https://www.android.com) [![License: Apache 2](https://img.shields.io/badge/license-Apache%202-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
-<!-- preview screenshoot -->
-<img src="preview_images/todo_preview.png" width=200 align="right" />
-
-
 ToDo / Note taking app with dark theme 
+
+<!-- preview screenshoots -->
+<div text-align="justufy">
+ <img src="preview_images/prev_main.png" width=200 hspace="2"/>
+ <img src="preview_images/prev_add.png" width=200 hspace="2"/>
+ <img src="preview_images/prev_widgets.png" width=200 hspace="2"/>
+ <img src="preview_images/prev_android_o.png" width=200 hspace="2"/>
+</div>
 
 ## Features
 ~ Add new ToDo / Note <br>
