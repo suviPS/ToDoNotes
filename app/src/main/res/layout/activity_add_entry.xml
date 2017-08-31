@@ -46,13 +46,13 @@
             android:id="@+id/radioSex"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginStart="10dp"
             android:orientation="horizontal">
 
             <RadioButton
                 android:id="@+id/addentry_radio1"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:checked="true"
@@ -63,7 +63,7 @@
 
             <RadioButton
                 android:id="@+id/addentry_radio2"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="onPriorityChanged"
@@ -73,7 +73,7 @@
 
             <RadioButton
                 android:id="@+id/addentry_radio3"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="onPriorityChanged"

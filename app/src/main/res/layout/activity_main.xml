@@ -1,39 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+
+<com.sothree.slidinguppanel.SlidingUpPanelLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:sothree="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/sliding_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_background"
-    tools:context="tk.httpksfdev.todo.MainActivity">
+    android:gravity="bottom"
 
-    <RelativeLayout
+    sothree:umanoPanelHeight="30dp"
+    sothree:umanoShadowHeight="0dp"
+    sothree:umanoOverlay="true"
+    sothree:umanoParallaxOffset="35dp"
+    sothree:umanoScrollableView="@+id/recycler_view_old"
+    >
+
+
+    <!-- Main part -->
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:background="@color/main_background">
+
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_viev"
+            android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/textView">
-
-        </android.support.v7.widget.RecyclerView>
+            />
 
 
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/floating_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="35dp"
+            android:src="@android:drawable/ic_input_add"
+            android:tint="@android:color/white" />
+
+    </FrameLayout>
 
 
-    </RelativeLayout>
+
+    <!-- Slide part-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="0dp"
+        android:padding="0dp"
+        android:clickable="true"
+        android:focusable="false"
+        >
+
+        <ImageSwitcher
+            android:id="@+id/arrow_imageswitcher"
+            android:layout_width="30dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
+            android:inAnimation="@anim/rotate_in"
+            android:outAnimation="@anim/rotate_out" >
+
+            <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_arrow_up"
+            />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_arrow_down"
+                />
+
+        </ImageSwitcher>
 
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floating_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:background="@color/floating_button_background"
-        android:src="@android:drawable/ic_input_add"
-        android:tint="@android:color/white" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="8dp"
+            android:gravity="center"
+            android:text="Done items"
+            android:textSize="24sp"
+            android:textStyle="italic"
+            android:textColor="@color/todo_old_text_color"
+            android:background="@color/main_background_2"
+            />
 
-</FrameLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view_old"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp"
+            android:background="@color/main_background_2"
+            />
+
+    </LinearLayout>
+
+
+</com.sothree.slidinguppanel.SlidingUpPanelLayout>
+
+
+

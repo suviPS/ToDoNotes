@@ -37,7 +37,7 @@
             android:id="@+id/editentry_textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Priority: "
+            android:text="Priority:"
             android:textColor="@color/text_view_color"
             android:textSize="18sp"
             android:textStyle="bold|italic" />
@@ -47,15 +47,13 @@
             android:id="@+id/editentry_radioSex"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginStart="10dp"
-            android:layout_toEndOf="@+id/editentry_textView2"
             android:orientation="horizontal">
 
             <RadioButton
                 android:id="@+id/editentry_radio1"
-
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:checked="true"
@@ -66,7 +64,7 @@
 
             <RadioButton
                 android:id="@+id/editentry_radio2"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="onPriorityChanged"
@@ -76,7 +74,7 @@
 
             <RadioButton
                 android:id="@+id/editentry_radio3"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="onPriorityChanged"
@@ -93,7 +91,7 @@
         android:id="@+id/editentry_textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:text="More: "
         android:textColor="@color/text_view_color"
         android:textSize="18sp"

@@ -46,9 +46,9 @@ public class AddEntryActivity extends AppCompatActivity {
         ((RadioButton) findViewById(R.id.addentry_radio1)).setChecked(true);
         mPriority = 1;
 
-        editTextInfo = (EditText)findViewById(R.id.addentry_editText);
-        editTextDesc = (EditText)findViewById(R.id.addentry_editTextDesc);
-        reminderCheckBox = (CheckBox) findViewById(R.id.addentry_checkbox_notification);
+        editTextInfo = findViewById(R.id.addentry_editText);
+        editTextDesc = findViewById(R.id.addentry_editTextDesc);
+        reminderCheckBox = findViewById(R.id.addentry_checkbox_notification);
 
         editTextInfo.setFocusableInTouchMode(true);
         editTextInfo.requestFocus();
@@ -134,8 +134,8 @@ public class AddEntryActivity extends AppCompatActivity {
 
     //initial stuff for reminder, should be called only once
     private void setUpReminder(){
-        final TextView dataTextView = (TextView) findViewById(R.id.addentry_datapicker_textview);
-        final TextView timeTextView = (TextView) findViewById(R.id.addentry_timepicker_textview);
+        final TextView dataTextView = findViewById(R.id.addentry_datapicker_textview);
+        final TextView timeTextView = findViewById(R.id.addentry_timepicker_textview);
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(calendar.getTimeInMillis() + (1000 * 60 * 60));

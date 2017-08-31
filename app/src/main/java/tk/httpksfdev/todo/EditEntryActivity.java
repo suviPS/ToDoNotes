@@ -46,9 +46,9 @@ public class EditEntryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_entry);
         getSupportActionBar().setTitle("Edit item");
-        editTextInfo = (EditText)findViewById(R.id.editentry_editText);
-        editTextDesc = (EditText)findViewById(R.id.editentry_editTextDesc);
-        reminderCheckBox = (CheckBox) findViewById(R.id.editentry_checkbox_notification);
+        editTextInfo = findViewById(R.id.editentry_editText);
+        editTextDesc = findViewById(R.id.editentry_editTextDesc);
+        reminderCheckBox = findViewById(R.id.editentry_checkbox_notification);
 
         Intent intent = getIntent();
         if(intent == null){

@@ -1,12 +1,10 @@
 package tk.httpksfdev.todo;
 
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.MergeCursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,21 +19,27 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageSwitcher;
 import android.widget.Toast;
+
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import tk.httpksfdev.todo.data.ToDoContract;
 import tk.httpksfdev.todo.notifications.MyNotificationUtil;
 import tk.httpksfdev.todo.widgets.WidgetUtils;
 
-import static tk.httpksfdev.todo.CustomCursorAdapter.FINISHED_ADD;
-
 public class MainActivity extends AppCompatActivity implements
-        LoaderManager.LoaderCallbacks<MergeCursor> {
+        LoaderManager.LoaderCallbacks<Cursor> {
 
+    private SlidingUpPanelLayout slidingUpPanelLayout;
     private RecyclerView recyclerView;
-    private CustomCursorAdapter mAdapter;
+    private RecyclerView recyclerViewOld;
 
-    private final int LOADER_ID = 0;
+    private ActiveCursorAdapter mAdapter;
+    private OldCursorAdapter mAdapterOld;
+
+    private final int LOADER_ACTIVE_ID = 0;
+    private final int LOADER_OLD_ID = 1;
 
     private Context mContext;
 
@@ -44,88 +48,48 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mContext = this;
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_viev);
+        slidingUpPanelLayout = findViewById(R.id.sliding_layout);
+
+        recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new CustomCursorAdapter(this);
+        mAdapter = new ActiveCursorAdapter(this);
         recyclerView.setAdapter(mAdapter);
 
-        // add ItemTouchHelper to handle swipe and drag of elements
+        recyclerViewOld = findViewById(R.id.recycler_view_old);
+        recyclerViewOld.setLayoutManager(new LinearLayoutManager(this));
+        mAdapterOld = new OldCursorAdapter(this);
+        recyclerViewOld.setAdapter(mAdapterOld);
+
+
+        // add helper to delete entry on swipe
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                //do nothing for now
+                //do nothing
                 return false;
             }
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                //
-                int id = (int) viewHolder.itemView.getTag();
-                //if viewHolder is To Do
-                if(id < FINISHED_ADD){
-                    String stringId = Integer.toString(id);
-                    Uri uri = ToDoContract.ToDoEntry.CONTENT_URI;
-                    uri = uri.buildUpon().appendPath(stringId).build();
-                    getContentResolver().delete(uri, null, null);
-                    MyNotificationUtil.cancelNotification(getApplicationContext(), ""+ id);
+                //delete entry
+                String id = "" + viewHolder.itemView.getTag();
+                Uri uri = ToDoContract.ToDoEntry.CONTENT_URI.buildUpon().appendPath(id).build();
+                getContentResolver().delete(uri, null, null);
 
+                //cancel reminder if one is active
+                MyNotificationUtil.cancelNotification(getApplicationContext(), ""+ id);
 
-                } else {
-                    final int idOld = id - FINISHED_ADD;
-                    String stringId = Integer.toString(idOld);
-                    Uri uri = ToDoContract.ToDoEntryOld.CONTENT_URI_OLD;
-                    uri = uri.buildUpon().appendPath(stringId).build();
-                    final Uri uriFinal = uri;
+                //notify loaders
+                getSupportLoaderManager().restartLoader(LOADER_ACTIVE_ID, null, MainActivity.this);
+                getSupportLoaderManager().restartLoader(LOADER_OLD_ID, null, MainActivity.this);
 
-                    Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-                    cursor.moveToFirst();
-                    final String name  = cursor.getString(cursor.getColumnIndex(ToDoContract.ToDoEntryOld.COLUMN_INFO));
-                    final String desc = cursor.getString(cursor.getColumnIndex(ToDoContract.ToDoEntryOld.COLUMN_DESC));
-                    final int priority = cursor.getInt(cursor.getColumnIndex(ToDoContract.ToDoEntryOld.COLUMN_PRIORITY));
-
-                    //check API level
-                    int theme = -1;
-                    if(Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
-                        theme = android.R.style.Theme_Material_Dialog_NoActionBar;
-                    } else{
-                            //doesn't support cool dark theme :|
-                            theme = android.R.style.Theme_Holo_Dialog_NoActionBar;
-                    }
-                        new AlertDialog.Builder(mContext, theme)
-                                .setTitle("\t" + name)
-                                .setMessage(desc)
-                                .setPositiveButton("Cancel", null)
-                                .setNegativeButton("Move to active pool", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        //add to active ToDos
-                                        ContentValues cv = new ContentValues();
-                                        cv.put(ToDoContract.ToDoEntry.COLUMN_INFO, name);
-                                        cv.put(ToDoContract.ToDoEntry.COLUMN_DESC, desc);
-                                        cv.put(ToDoContract.ToDoEntry.COLUMN_PRIORITY, priority);
-                                        cv.put(ToDoContract.ToDoEntry.COLUMN_REMINDER, -1);
-                                        getContentResolver().insert(ToDoContract.ToDoEntry.CONTENT_URI, cv);
-
-                                        //remove from ToDoOld
-                                        getContentResolver().delete(uriFinal, null, null);
-
-                                        //notify loader
-                                        getSupportLoaderManager().restartLoader(LOADER_ID, null, MainActivity.this);
-                                        //update widget
-                                        WidgetUtils.updateDataWidgetToDo(getApplicationContext());
-                                        WidgetUtils.updateDataWidgetNote(getApplicationContext());
-                                    }
-                                })
-                                .show();
-                }
-                getSupportLoaderManager().restartLoader(LOADER_ID, null, MainActivity.this);
                 //update widget
                 WidgetUtils.updateDataWidgetToDo(getApplicationContext());
                 WidgetUtils.updateDataWidgetNote(getApplicationContext());
             }
         }).attachToRecyclerView(recyclerView);
 
-
+        //listener for AddEntry
         findViewById(R.id.floating_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,45 +98,63 @@ public class MainActivity extends AppCompatActivity implements
             }
         });
 
-        getSupportLoaderManager().initLoader(LOADER_ID, null, this);
+        //listener for arrow animation
+        slidingUpPanelLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+            @Override
+            public void onPanelSlide(View panel, float slideOffset) {
+                //
+            }
+
+            @Override
+            public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
+                // change arrow with animation
+                if(SlidingUpPanelLayout.PanelState.EXPANDED.equals(newState)){
+                    ((ImageSwitcher)findViewById(R.id.arrow_imageswitcher)).setImageResource(R.drawable.ic_arrow_down);
+                } else if(SlidingUpPanelLayout.PanelState.COLLAPSED.equals(newState)){
+                    ((ImageSwitcher)findViewById(R.id.arrow_imageswitcher)).setImageResource(R.drawable.ic_arrow_up);
+                }
+            }
+        });
+
+
+        getSupportLoaderManager().initLoader(LOADER_ACTIVE_ID, null, this);
+        getSupportLoaderManager().initLoader(LOADER_OLD_ID, null, this);
     }
 
 
     @Override
-    public Loader<MergeCursor> onCreateLoader(final int id, Bundle args) {
-        return new AsyncTaskLoader<MergeCursor>(this) {
-            MergeCursor mData = null;
+    public Loader<Cursor> onCreateLoader(final int id, Bundle args) {
+        return new AsyncTaskLoader<Cursor>(this) {
+            Cursor mData = null;
 
             @Override
             protected void onStartLoading() {
                 if(mData != null){
-                    // Delivers any previously loaded data immediately
                     deliverResult(mData);
                 } else {
-                    // Force new load
                     forceLoad();
                 }
             }
 
             @Override
-            public MergeCursor loadInBackground() {
+            public Cursor loadInBackground() {
                 try{
-//                    String whereClause = null;
-                            Cursor toDo =  getContentResolver().query(ToDoContract.ToDoEntry.CONTENT_URI,
-                                    null,
-                                    null,
-                                    null,
-                                    ToDoContract.ToDoEntry.COLUMN_PRIORITY);
-                            Cursor toDoOld = getContentResolver().query(ToDoContract.ToDoEntryOld.CONTENT_URI_OLD,
-                                    null,
-                                    null,
-                                    null,
-                                    ToDoContract.ToDoEntryOld._ID + " DESC");
+                    Cursor data = null;
+                    if(id == LOADER_ACTIVE_ID){
+                        data = getContentResolver().query(ToDoContract.ToDoEntry.CONTENT_URI,
+                                null,
+                                null,
+                                null,
+                                ToDoContract.ToDoEntry.COLUMN_PRIORITY);
 
-                    MergeCursor mergeCursor = new MergeCursor(new Cursor[] {toDo, toDoOld});
-
-                    //loader will read data from MergeCursor
-                    return mergeCursor;
+                    } else if (id == LOADER_OLD_ID){
+                        data = getContentResolver().query(ToDoContract.ToDoEntryOld.CONTENT_URI_OLD,
+                                null,
+                                null,
+                                null,
+                                ToDoContract.ToDoEntryOld._ID + " DESC");
+                    }
+                    return data;
 
                 } catch (Exception e){
                     e.printStackTrace();
@@ -180,9 +162,9 @@ public class MainActivity extends AppCompatActivity implements
                 }
             }
 
-            // deliverResult sends the result of the load, a Cursor, to the registered listener
+            // deliver result to the registered listener
             @Override
-            public void deliverResult(MergeCursor data) {
+            public void deliverResult(Cursor data) {
                 mData = data;
                 super.deliverResult(data);
             }
@@ -190,25 +172,36 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onLoadFinished(Loader<MergeCursor> loader, MergeCursor data) {
-        // Update the data that the adapter uses to create ViewHolders
-        if(loader.getId() == LOADER_ID)
-         mAdapter.swapCursor(data);
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        if(loader.getId() == LOADER_ACTIVE_ID)
+            mAdapter.swapCursor(data);
+        else if(loader.getId() == LOADER_OLD_ID)
+            mAdapterOld.swapCursor(data);
     }
 
     @Override
-    public void onLoaderReset(Loader<MergeCursor> loader) {
-            mAdapter.swapCursor(null);
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mAdapter.swapCursor(null);
+        mAdapterOld.swapCursor(null);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        // re-queries for all tasks
-        getSupportLoaderManager().restartLoader(LOADER_ID, null, this);
+
+        getSupportLoaderManager().restartLoader(LOADER_ACTIVE_ID, null, this);
+        getSupportLoaderManager().restartLoader(LOADER_OLD_ID, null, this);
     }
 
+    @Override
+    public void onBackPressed() {
+        if(slidingUpPanelLayout.getPanelState().equals(SlidingUpPanelLayout.PanelState.EXPANDED)){
+            slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+            return;
+        }
 
+        super.onBackPressed();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
