@@ -3,7 +3,7 @@
 ToDo / Note taking app with dark theme 
 
 <!-- preview screenshoots -->
-<div text-align="justufy">
+<div text-align="center">
  <img src="preview_images/prev_main.png" width=200 hspace="2"/>
  <img src="preview_images/prev_add.png" width=200 hspace="2"/>
  <img src="preview_images/prev_widgets.png" width=200 hspace="2"/>
