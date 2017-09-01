@@ -1,15 +1,6 @@
-# ToDoNotes [![Platform](https://img.shields.io/badge/platform-Android-green.svg)](https://www.android.com) [![License: Apache 2](https://img.shields.io/badge/license-Apache%202-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
+# ToDoNotes [![Platform](https://img.shields.io/badge/platform-Android-green.svg)](https://www.android.com) [![License: Apache 2](https://img.shields.io/badge/license-Apache%202-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0) [![Get it on Google Play](https://img.shields.io/badge/get%20it%20on-Google%20Play-lightgrey.svg)](https://play.google.com/store/apps/details?id=tk.httpksfdev.todo&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1)
 
-<div text-align="justify">
-
-
-ToDo / Note taking app with dark theme  <a href='https://play.google.com/store/apps/details?id=tk.httpksfdev.todo&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>
- <img height=50 alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/>
- </a>
-
-</div>
-
-
+ToDo / Note taking app with dark theme
 
 <!-- preview screenshoots -->
 <div text-align="middle">
@@ -18,6 +9,11 @@ ToDo / Note taking app with dark theme  <a href='https://play.google.com/store/a
  <img src="preview_images/prev_widgets.png" width=200 hspace="2"/>
  <img src="preview_images/prev_android_o.png" width=200 hspace="2"/>
 </div>
+
+<!-- Google Play -->
+<a href='https://play.google.com/store/apps/details?id=tk.httpksfdev.todo&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img height=100 alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a>
+
+
 
 ## Features
 ~ Add new ToDo / Note <br>
