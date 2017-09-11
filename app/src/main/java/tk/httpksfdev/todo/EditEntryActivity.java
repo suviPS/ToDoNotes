@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -79,6 +80,9 @@ public class EditEntryActivity extends AppCompatActivity {
 
         //setUp UI
         setUpUi();
+
+        //remove notification if still there
+        MyNotificationUtil.removeNotification(this, mId);
 
     }
 
@@ -210,7 +214,7 @@ public class EditEntryActivity extends AppCompatActivity {
         PreferenceManager.getDefaultSharedPreferences(EditEntryActivity.this).edit().putString(MyUtils.PREF_TIME_TEMP, timeString).commit();
 
         //add starting info to textViews
-        dataTextView.setText(mDay + "/" + mMonth + "/" + mYear);
+        dataTextView.setText(mDay + "/" + (mMonth + 1) + "/" + mYear);
         timeTextView.setText(mHour + ":" + mMinutes);
 
         //add listeners for date/time changes
@@ -223,7 +227,7 @@ public class EditEntryActivity extends AppCompatActivity {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                                 //edit textView
-                                dataTextView.setText(dayOfMonth + "/" + monthOfYear + "/" + year);
+                                dataTextView.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
 
                                 //write to sp
                                 String dateString = year + "##" + monthOfYear + "##" + dayOfMonth;
@@ -282,7 +286,9 @@ public class EditEntryActivity extends AppCompatActivity {
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.edit_menu_done) {
+        if(item.getItemId() == android.R.id.home){
+            NavUtils.navigateUpFromSameTask(this);
+        } else if(item.getItemId() == R.id.edit_menu_done) {
             //set done icon
             item.setIcon(R.drawable.ic_done_02);
 

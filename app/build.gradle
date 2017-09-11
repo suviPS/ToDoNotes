@@ -7,9 +7,9 @@ android {
         applicationId "tk.httpksfdev.todo"
         minSdkVersion 19
         targetSdkVersion 26
-        versionName '3.1'
+        versionName '3.2'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        versionCode 31
+        versionCode 32
     }
     buildTypes {
         release {
@@ -39,5 +39,5 @@ dependencies {
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
     compile 'com.sothree.slidinguppanel:library:3.3.1'
     //Firebase JobDispatcher
-    compile 'com.firebase:firebase-jobdispatcher:0.8.0'
+    compile 'com.firebase:firebase-jobdispatcher:0.8.1'
 }

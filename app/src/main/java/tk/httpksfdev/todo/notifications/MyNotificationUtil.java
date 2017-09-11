@@ -5,6 +5,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationChannelGroup;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -28,9 +29,12 @@ import com.firebase.jobdispatcher.Trigger;
 
 import java.util.Calendar;
 
+import tk.httpksfdev.todo.EditEntryActivity;
 import tk.httpksfdev.todo.MainActivity;
+import tk.httpksfdev.todo.MyUtils;
 import tk.httpksfdev.todo.R;
 import tk.httpksfdev.todo.data.ToDoContract;
+import tk.httpksfdev.todo.widgets.widget_todo.ToDoClickIntentService;
 
 /**
  * Util class for notifications
@@ -195,11 +199,28 @@ public class MyNotificationUtil {
             tempNotificationChannelId = notificationChannel.getId();
         }
 
-        //create notification
+        //create intents
         int notificationId = NOTIFICATION_BASE_ID + id;
+
+        //main body
         Intent intent = new Intent(context, MainActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
+        //action edit
+        Intent intentEdit = new Intent(context, EditEntryActivity.class);
+        intentEdit.putExtra(MyUtils.EXTRA_ITEM_ID, ""+id);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+        stackBuilder.addParentStack(EditEntryActivity.class);
+        stackBuilder.addNextIntent(intentEdit);
+        PendingIntent pendingIntentEdit = stackBuilder.getPendingIntent(notificationId, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        //action done
+        Intent intentDone = new Intent(context, ToDoClickIntentService.class);
+        intentDone.setAction(ToDoClickIntentService.ACTION_CLICK_TODO_ITEM_DONE);
+        intentDone.putExtra(ToDoClickIntentService.EXTRA_TODO_ITEM_ID, ""+id);
+        PendingIntent pendingIntentDone = PendingIntent.getService(context, notificationId, intentDone, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        //create notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, tempNotificationChannelId);
         builder.setSmallIcon(R.drawable.checkbox)
                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_list_notification_kk))
@@ -211,6 +232,8 @@ public class MyNotificationUtil {
                 .setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setContentIntent(contentIntent)
+                .addAction(R.drawable.ic_edit, "Edit", pendingIntentEdit)
+                .addAction(R.drawable.ic_done_02, "Done", pendingIntentDone)
         ;
 
         //set big style for long desc
@@ -219,6 +242,12 @@ public class MyNotificationUtil {
 
         Notification notification = builder.build();
         NotificationManagerCompat.from(context).notify(notificationId, notification);
+    }
+
+    //[Remove notification (on action button clicked)]
+    public static void removeNotification(Context context, int id){
+        NotificationManagerCompat nm = NotificationManagerCompat.from(context);
+        nm.cancel(NOTIFICATION_BASE_ID + id);
     }
 
 

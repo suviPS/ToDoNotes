@@ -74,6 +74,7 @@
             android:configChanges="orientation|keyboardHidden"/>
         <activity
             android:name=".EditEntryActivity"
+            android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden"
             />

@@ -72,6 +72,7 @@ public class ToDoClickIntentService extends IntentService {
 
                 WidgetUtils.updateDataWidgetToDo(getApplicationContext());
                 MyNotificationUtil.cancelNotification(getApplicationContext(), id);
+                MyNotificationUtil.removeNotification(getApplicationContext(), Integer.valueOf(id));
             } else {
                 //won't happend
                 Log.d("TAG+++", "Unsupported action in ToDoClickIntentService");

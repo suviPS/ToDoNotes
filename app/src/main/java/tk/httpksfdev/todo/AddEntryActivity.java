@@ -152,7 +152,7 @@ public class AddEntryActivity extends AppCompatActivity {
         PreferenceManager.getDefaultSharedPreferences(AddEntryActivity.this).edit().putString(MyUtils.PREF_TIME_TEMP, timeString).commit();
 
         //add starting info to textViews
-        dataTextView.setText(mDay + "/" + mMonth + "/" + mYear);
+        dataTextView.setText(mDay + "/" + (mMonth + 1) + "/" + mYear);
         timeTextView.setText(mHour + ":" + mMinutes);
 
         //add listeners for date/time changes
@@ -165,7 +165,7 @@ public class AddEntryActivity extends AppCompatActivity {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                                 //edit textView
-                                dataTextView.setText(dayOfMonth + "/" + monthOfYear + "/" + year);
+                                dataTextView.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
 
                                 //write to sp
                                 String dateString = year + "##" + monthOfYear + "##" + dayOfMonth;
