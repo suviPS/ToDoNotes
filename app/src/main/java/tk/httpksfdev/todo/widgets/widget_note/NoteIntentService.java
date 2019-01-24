@@ -2,7 +2,7 @@ package tk.httpksfdev.todo.widgets.widget_note;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.Log;
 
 import tk.httpksfdev.todo.AddEntryActivity;
