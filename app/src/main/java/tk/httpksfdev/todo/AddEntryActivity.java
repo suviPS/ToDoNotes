@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -13,6 +14,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.Window;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -20,6 +28,9 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
+
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Calendar;
 
@@ -29,13 +40,51 @@ import tk.httpksfdev.todo.widgets.WidgetUtils;
 import static tk.httpksfdev.todo.notifications.MyNotificationUtil.scheduleNotification;
 
 public class AddEntryActivity extends AppCompatActivity {
-
+    private ViewGroup rootLayout;
     private EditText editTextInfo;
     private EditText editTextDesc;
     private CheckBox reminderCheckBox;
 
+    private FloatingActionButton addEntryFab;
+    private Button addEntryButton;
+    private LinearLayout reminderLayout;
+
     private int mPriority;
     private long mReminder = -1;
+
+    private boolean keyboardListenersAttached = false;
+    private boolean keyboardWasDisplayed = false;
+    private ViewTreeObserver.OnGlobalLayoutListener keyboardLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+        @Override
+        public void onGlobalLayout() {
+            // navigation bar height
+            int navigationBarHeight = 0;
+            int resourceId = getResources().getIdentifier("navigation_bar_height", "dimen", "android");
+            if (resourceId > 0) {
+                navigationBarHeight = getResources().getDimensionPixelSize(resourceId);
+            }
+
+            // status bar height
+            int statusBarHeight = 0;
+            resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+            if (resourceId > 0) {
+                statusBarHeight = getResources().getDimensionPixelSize(resourceId);
+            }
+
+            // display window size for the app layout
+            Rect rect = new Rect();
+            getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
+            int keyboardHeight = rootLayout.getRootView().getHeight() - (statusBarHeight + navigationBarHeight + rect.height());
+            if (keyboardHeight <= 0) {
+                if(keyboardWasDisplayed)
+                    onHideKeyboard();
+            } else {
+                if(!keyboardWasDisplayed)
+                    onShowKeyboard();
+            }
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +98,9 @@ public class AddEntryActivity extends AppCompatActivity {
         editTextInfo = findViewById(R.id.addentry_editText);
         editTextDesc = findViewById(R.id.addentry_editTextDesc);
         reminderCheckBox = findViewById(R.id.addentry_checkbox_notification);
+        addEntryFab = findViewById(R.id.addentry_add_fab);
+        addEntryButton = findViewById(R.id.addentry_add_button);
+        reminderLayout = findViewById(R.id.addentry_reminder_layout);
 
         editTextInfo.setFocusableInTouchMode(true);
         editTextInfo.requestFocus();
@@ -62,8 +114,50 @@ public class AddEntryActivity extends AppCompatActivity {
 
         //reminder setUp
         setUpReminder();
+
+        attachKeyboardListener();
     }
 
+    private void attachKeyboardListener() {
+        if (keyboardListenersAttached) {
+            return;
+        }
+        rootLayout = (ViewGroup) findViewById(R.id.addentry_root);
+        rootLayout.getViewTreeObserver().addOnGlobalLayoutListener(keyboardLayoutListener);
+        keyboardListenersAttached = true;
+    }
+
+    private void onShowKeyboard() {
+        addEntryButton.setVisibility(View.GONE);
+        reminderLayout.setVisibility(View.GONE);
+
+        Animation animation = new AlphaAnimation(0, 1);
+        animation.setInterpolator(new DecelerateInterpolator()); //add this
+        animation.setDuration(500);
+        addEntryFab.setAnimation(animation);
+        addEntryFab.animate();
+
+        addEntryFab.setVisibility(View.VISIBLE);
+
+        keyboardWasDisplayed = true;
+    }
+    private void onHideKeyboard() {
+        addEntryFab.setVisibility(View.GONE);
+
+        Animation animation = new AlphaAnimation(0, 1);
+        animation.setInterpolator(new DecelerateInterpolator()); //add this
+        animation.setDuration(500);
+        addEntryButton.setAnimation(animation);
+        addEntryButton.animate();
+
+        reminderLayout.setAnimation(animation);
+        reminderLayout.animate();
+
+        addEntryButton.setVisibility(View.VISIBLE);
+        reminderLayout.setVisibility(View.VISIBLE);
+
+        keyboardWasDisplayed = false;
+    }
 
     public void onAddClicked(View v){
         String input = editTextInfo.getText().toString();
@@ -195,7 +289,6 @@ public class AddEntryActivity extends AppCompatActivity {
             }
         });
     }
-
 
 
     @Override

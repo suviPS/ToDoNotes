@@ -1,191 +1,209 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/main_background"
-    android:orientation="vertical"
-    tools:context="tk.httpksfdev.todo.AddEntryActivity">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <com.rengwuxian.materialedittext.MaterialEditText
-        android:id="@+id/editentry_editText"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/editentry_root"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="6dp"
-        android:hint="@string/hint_text"
-        android:inputType="textCapSentences"
-        android:textStyle="italic"
+        android:layout_height="match_parent"
+        android:background="@color/main_background"
+        android:orientation="vertical"
+        tools:context="tk.httpksfdev.todo.AddEntryActivity">
 
-        app:met_baseColor="@color/edit_text_color"
-        app:met_singleLineEllipsis="true"
-        />
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/editentry_editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginRight="16dp"
+            android:hint="@string/hint_text"
+            android:inputType="textCapSentences"
+            android:textStyle="italic"
 
-    <LinearLayout
-        android:id="@+id/editentry_linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="6dp"
-        android:gravity="center"
-        android:orientation="horizontal">
+            app:met_baseColor="@color/edit_text_color"
+            app:met_singleLineEllipsis="true" />
+
+        <LinearLayout
+            android:id="@+id/editentry_linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginRight="16dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/editentry_textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Priority:"
+                android:textColor="@color/text_view_color"
+                android:textSize="18sp"
+                android:textStyle="bold|italic" />
+
+
+            <RadioGroup
+                android:id="@+id/editentry_radioSex"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/editentry_radio1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:onClick="onPriorityChanged"
+                    android:text="High"
+                    android:textColor="@color/priority_1"
+                    android:textStyle="bold" />
+
+                <RadioButton
+                    android:id="@+id/editentry_radio2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onPriorityChanged"
+                    android:text="Medium"
+                    android:textColor="@color/priority_2"
+                    android:textStyle="bold" />
+
+                <RadioButton
+                    android:id="@+id/editentry_radio3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onPriorityChanged"
+                    android:text="Low"
+                    android:textColor="@color/priority_3"
+                    android:textStyle="bold" />
+
+            </RadioGroup>
+
+        </LinearLayout>
+
 
         <TextView
-            android:id="@+id/editentry_textView2"
+            android:id="@+id/editentry_textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Priority:"
+            android:layout_marginStart="16dp"
+            android:text="More: "
             android:textColor="@color/text_view_color"
             android:textSize="18sp"
             android:textStyle="bold|italic" />
 
 
-        <RadioGroup
-            android:id="@+id/editentry_radioSex"
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/editentry_editTextDesc"
+            android:layout_width="match_parent"
+            android:layout_height="260dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginRight="8dp"
+            android:gravity="start"
+            android:hint="@string/lorem_ipsum_text"
+            android:inputType="textMultiLine|textCapSentences"
+            android:padding="4dp"
+            android:textStyle="italic"
+
+            app:met_baseColor="@color/edit_text_text_color"
+            app:met_floatingLabel="none" />
+
+
+        <!-- Reminder part -->
+        <LinearLayout
+            android:id="@+id/editentry_reminder_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <CheckBox
+                android:id="@+id/editentry_checkbox_notification"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:onClick="reminderCheckboxClickedEdit"
+                android:shadowColor="@color/remind_me_color"
+                android:text="Remind me"
+                android:textColor="@color/remind_me_color"
+                android:textSize="18sp"
+                android:textStyle="bold|italic" />
+
+            <TextView
+                android:id="@+id/editentry_datapicker_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:text="current date  "
+                android:textColor="@color/colorAccent"
+                android:textSize="18sp"
+
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/editentry_textview03"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:text="at"
+                android:textColor="@color/remind_me_color"
+                android:textSize="18sp"
+                android:textStyle="bold|italic"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/editentry_timepicker_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
+                android:text="current time"
+                android:textColor="@color/colorAccent"
+                android:textSize="18sp"
+
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/editentry_save_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="10dp"
-            android:orientation="horizontal">
+            android:background="@color/colorAccent"
+            android:onClick="onSaveButton"
+            android:text="Save" />
 
-            <RadioButton
-                android:id="@+id/editentry_radio1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:checked="true"
-                android:onClick="onPriorityChanged"
-                android:text="High"
-                android:textColor="@color/priority_1"
-                android:textStyle="bold" />
-
-            <RadioButton
-                android:id="@+id/editentry_radio2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="onPriorityChanged"
-                android:text="Medium"
-                android:textColor="@color/priority_2"
-                android:textStyle="bold" />
-
-            <RadioButton
-                android:id="@+id/editentry_radio3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="onPriorityChanged"
-                android:text="Low"
-                android:textColor="@color/priority_3"
-                android:textStyle="bold" />
-
-        </RadioGroup>
 
     </LinearLayout>
 
-
-    <TextView
-        android:id="@+id/editentry_textView3"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/editentry_save_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="More: "
-        android:textColor="@color/text_view_color"
-        android:textSize="18sp"
-        android:textStyle="bold|italic" />
-
-
-    <com.rengwuxian.materialedittext.MaterialEditText
-        android:id="@+id/editentry_editTextDesc"
-        android:layout_width="match_parent"
-        android:layout_height="260dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="0dp"
-        android:padding="4dp"
-        android:hint="@string/lorem_ipsum_text"
-        android:inputType="textMultiLine|textCapSentences"
-        android:textStyle="italic"
-        android:gravity="start"
-
-        app:met_baseColor="@color/edit_text_text_color"
-        app:met_floatingLabel="none"
-        />
-
-
-    <!-- Reminder part -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <CheckBox
-            android:id="@+id/editentry_checkbox_notification"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="6dp"
-            android:layout_marginRight="6dp"
-            android:onClick="reminderCheckboxClickedEdit"
-            android:shadowColor="@color/remind_me_color"
-            android:text="Remind me"
-            android:textColor="@color/remind_me_color"
-            android:textSize="18sp"
-            android:textStyle="bold|italic" />
-
-        <TextView
-            android:id="@+id/editentry_datapicker_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="6dp"
-            android:layout_marginRight="6dp"
-            android:text="current date  "
-            android:textColor="@color/colorAccent"
-            android:textSize="18sp"
-
-            android:textStyle="bold"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/editentry_textview03"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="6dp"
-            android:layout_marginRight="6dp"
-            android:text="at"
-            android:textColor="@color/remind_me_color"
-            android:textSize="18sp"
-            android:textStyle="bold|italic"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/editentry_timepicker_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="6dp"
-            android:layout_marginRight="6dp"
-            android:text="current time"
-            android:textColor="@color/colorAccent"
-            android:textSize="18sp"
-
-            android:textStyle="bold"
-            android:visibility="gone" />
-
-    </LinearLayout>
-
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorAccent"
+        android:layout_gravity="end|bottom"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/ic_save"
         android:onClick="onSaveButton"
-        android:text="Save" />
-
-
-</LinearLayout>
+        />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
