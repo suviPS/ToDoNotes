@@ -80,8 +80,8 @@ public class MainActivity extends AppCompatActivity implements
                 MyNotificationUtil.cancelNotification(getApplicationContext(), ""+ id);
 
                 //notify loaders
-                getSupportLoaderManager().restartLoader(LOADER_ACTIVE_ID, null, MainActivity.this);
-                getSupportLoaderManager().restartLoader(LOADER_OLD_ID, null, MainActivity.this);
+                LoaderManager.getInstance(MainActivity.this).restartLoader(LOADER_ACTIVE_ID, null, MainActivity.this);
+                LoaderManager.getInstance(MainActivity.this).restartLoader(LOADER_OLD_ID, null, MainActivity.this);
 
                 //update widget
                 WidgetUtils.updateDataWidgetToDo(getApplicationContext());
@@ -117,8 +117,8 @@ public class MainActivity extends AppCompatActivity implements
         });
 
 
-        getSupportLoaderManager().initLoader(LOADER_ACTIVE_ID, null, this);
-        getSupportLoaderManager().initLoader(LOADER_OLD_ID, null, this);
+        LoaderManager.getInstance(MainActivity.this).initLoader(LOADER_ACTIVE_ID, null, this);
+        LoaderManager.getInstance(MainActivity.this).initLoader(LOADER_OLD_ID, null, this);
     }
 
 
@@ -189,8 +189,8 @@ public class MainActivity extends AppCompatActivity implements
     protected void onResume() {
         super.onResume();
 
-        getSupportLoaderManager().restartLoader(LOADER_ACTIVE_ID, null, this);
-        getSupportLoaderManager().restartLoader(LOADER_OLD_ID, null, this);
+        LoaderManager.getInstance(MainActivity.this).restartLoader(LOADER_ACTIVE_ID, null, this);
+        LoaderManager.getInstance(MainActivity.this).restartLoader(LOADER_OLD_ID, null, this);
     }
 
     @Override

@@ -38,10 +38,9 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0-alpha01'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha3'
     implementation 'com.google.android.material:material:1.1.0-alpha02'
-    //added
     implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha01'
     implementation 'com.rengwuxian.materialedittext:library:2.1.4'
     implementation 'com.sothree.slidinguppanel:library:3.3.1'
-    //Firebase JobDispatcher
-    implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
+    //Android job
+    implementation 'com.evernote:android-job:1.2.6'
 }
