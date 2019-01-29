@@ -205,5 +205,6 @@
         android:layout_marginBottom="16dp"
         android:src="@drawable/ic_save"
         android:onClick="onSaveButton"
+        android:visibility="gone"
         />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

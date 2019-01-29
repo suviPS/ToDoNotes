@@ -207,5 +207,6 @@
         android:src="@android:drawable/ic_input_add"
         android:tint="@android:color/white"
         android:onClick="onAddClicked"
+        android:visibility="gone"
         />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
