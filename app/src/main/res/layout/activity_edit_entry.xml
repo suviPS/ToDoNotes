@@ -33,8 +33,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="4dp"
             android:layout_marginRight="16dp"
+            android:layout_marginBottom="12dp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -42,7 +43,7 @@
                 android:id="@+id/editentry_textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Priority:"
+                android:text="@string/priority"
                 android:textColor="@color/text_view_color"
                 android:textSize="18sp"
                 android:textStyle="bold|italic" />
@@ -63,7 +64,7 @@
                     android:layout_weight="1"
                     android:checked="true"
                     android:onClick="onPriorityChanged"
-                    android:text="High"
+                    android:text="@string/high"
                     android:textColor="@color/priority_1"
                     android:textStyle="bold" />
 
@@ -73,7 +74,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:onClick="onPriorityChanged"
-                    android:text="Medium"
+                    android:text="@string/medium"
                     android:textColor="@color/priority_2"
                     android:textStyle="bold" />
 
@@ -83,7 +84,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:onClick="onPriorityChanged"
-                    android:text="Low"
+                    android:text="@string/low"
                     android:textColor="@color/priority_3"
                     android:textStyle="bold" />
 
@@ -97,7 +98,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="More: "
+            android:text="@string/more"
             android:textColor="@color/text_view_color"
             android:textSize="18sp"
             android:textStyle="bold|italic" />
@@ -106,7 +107,9 @@
         <com.rengwuxian.materialedittext.MaterialEditText
             android:id="@+id/editentry_editTextDesc"
             android:layout_width="match_parent"
-            android:layout_height="260dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:minHeight="220dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="0dp"
             android:layout_marginRight="8dp"
@@ -124,8 +127,10 @@
         <LinearLayout
             android:id="@+id/editentry_reminder_layout"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="20dp"
+            android:layout_height="wrap_content"
+            >
 
             <CheckBox
                 android:id="@+id/editentry_checkbox_notification"
@@ -136,7 +141,7 @@
                 android:layout_marginRight="6dp"
                 android:onClick="reminderCheckboxClickedEdit"
                 android:shadowColor="@color/remind_me_color"
-                android:text="Remind me"
+                android:text="@string/remind_me"
                 android:textColor="@color/remind_me_color"
                 android:textSize="18sp"
                 android:textStyle="bold|italic" />
@@ -191,9 +196,8 @@
             android:layout_height="wrap_content"
             android:background="@color/colorAccent"
             android:onClick="onSaveButton"
-            android:text="Save" />
-
-
+            android:textColor="@color/edit_text_color"
+            android:text="@string/save" />
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

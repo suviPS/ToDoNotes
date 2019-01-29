@@ -87,7 +87,7 @@
             android:layout_gravity="center"
             android:padding="8dp"
             android:gravity="center"
-            android:text="Done items"
+            android:text="@string/done_items"
             android:textSize="22sp"
             android:textStyle="italic"
             android:textColor="@color/todo_old_text_color"

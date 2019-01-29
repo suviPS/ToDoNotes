@@ -21,9 +21,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:text="Choose note:"
+            android:text="@string/choose_note"
             android:background="@color/widget_note_chooser_textview_background"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textStyle="italic"
             android:layout_alignParentStart="true"/>
 
