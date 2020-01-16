@@ -7,9 +7,9 @@ android {
         applicationId "tk.httpksfdev.todo"
         minSdkVersion 19
         targetSdkVersion 28
-        versionName '3.4'
+        versionName '3.6'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        versionCode 34
+        versionCode 36
     }
     buildTypes {
         release {

@@ -32,6 +32,7 @@ import tk.httpksfdev.todo.MainActivity;
 import tk.httpksfdev.todo.MyUtils;
 import tk.httpksfdev.todo.R;
 import tk.httpksfdev.todo.data.ToDoContract;
+import tk.httpksfdev.todo.widgets.widget_todo.ToDoBroadcastReceiver;
 import tk.httpksfdev.todo.widgets.widget_todo.ToDoClickIntentService;
 
 /**
@@ -213,10 +214,10 @@ public class MyNotificationUtil {
         PendingIntent pendingIntentEdit = stackBuilder.getPendingIntent(notificationId, PendingIntent.FLAG_UPDATE_CURRENT);
 
         //action done
-        Intent intentDone = new Intent(context, ToDoClickIntentService.class);
+        Intent intentDone = new Intent(context, ToDoBroadcastReceiver.class);
         intentDone.setAction(ToDoClickIntentService.ACTION_CLICK_TODO_ITEM_DONE);
         intentDone.putExtra(ToDoClickIntentService.EXTRA_TODO_ITEM_ID, ""+id);
-        PendingIntent pendingIntentDone = PendingIntent.getService(context, notificationId, intentDone, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntentDone = PendingIntent.getBroadcast(context, notificationId, intentDone, PendingIntent.FLAG_UPDATE_CURRENT);
 
         //create notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, tempNotificationChannelId);
