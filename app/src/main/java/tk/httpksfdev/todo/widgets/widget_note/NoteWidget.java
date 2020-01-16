@@ -62,23 +62,23 @@ public class NoteWidget extends AppWidgetProvider {
         views.setTextViewText(R.id.widget_note_item_text, text);
 
         //Intent for item desc
-        Intent intent05 = new Intent(context, NoteIntentService.class);
+        Intent intent05 = new Intent(context, NoteBroadcastReceiver.class);
         intent05.setAction(itemAction);
         intent05.putExtra(NoteIntentService.EXTRA_NOTE_ITEM_ID, id);
-        PendingIntent pendingIntent05 = PendingIntent.getService(context, appWidgetId, intent05, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent05 = PendingIntent.getBroadcast(context, appWidgetId, intent05, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setOnClickPendingIntent(R.id.widget_note_item_text, pendingIntent05);
 
         //intent for add action
-        Intent intent01 = new Intent(context, NoteIntentService.class);
+        Intent intent01 = new Intent(context, NoteBroadcastReceiver.class);
         intent01.setAction(NoteIntentService.ACTION_CLICK_NOTE_TOOLBAR_ADD);
-        PendingIntent pendingIntent01 = PendingIntent.getService(context, 0, intent01, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent01 = PendingIntent.getBroadcast(context, 0, intent01, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setOnClickPendingIntent(R.id.widget_note_toolbar_add, pendingIntent01);
 
         //intent for chooser activity
-        Intent intent02 = new Intent(context, NoteIntentService.class);
+        Intent intent02 = new Intent(context, NoteBroadcastReceiver.class);
         intent02.setAction(NoteIntentService.ACTION_CLICK_NOTE_TOOLBAR_NAME);
         intent02.putExtra(NoteIntentService.EXTRA_NOTE_WIDGET_ID, appWidgetId);
-        PendingIntent pendingIntent02 = PendingIntent.getService(context, appWidgetId, intent02, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent02 = PendingIntent.getBroadcast(context, appWidgetId, intent02, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setOnClickPendingIntent(R.id.widget_note_toolbar_name, pendingIntent02);
 
 

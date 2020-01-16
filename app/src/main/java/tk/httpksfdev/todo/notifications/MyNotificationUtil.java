@@ -14,26 +14,25 @@ import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
-import android.support.v4.content.ContextCompat;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.firebase.jobdispatcher.FirebaseJobDispatcher;
-import com.firebase.jobdispatcher.GooglePlayDriver;
-import com.firebase.jobdispatcher.Job;
-import com.firebase.jobdispatcher.Lifetime;
-import com.firebase.jobdispatcher.RetryStrategy;
-import com.firebase.jobdispatcher.Trigger;
+import com.evernote.android.job.JobManager;
+import com.evernote.android.job.JobRequest;
+import com.evernote.android.job.util.support.PersistableBundleCompat;
 
 import java.util.Calendar;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 import tk.httpksfdev.todo.EditEntryActivity;
 import tk.httpksfdev.todo.MainActivity;
 import tk.httpksfdev.todo.MyUtils;
 import tk.httpksfdev.todo.R;
 import tk.httpksfdev.todo.data.ToDoContract;
+import tk.httpksfdev.todo.widgets.widget_todo.ToDoBroadcastReceiver;
 import tk.httpksfdev.todo.widgets.widget_todo.ToDoClickIntentService;
 
 /**
@@ -46,8 +45,10 @@ import tk.httpksfdev.todo.widgets.widget_todo.ToDoClickIntentService;
  */
 
 public class MyNotificationUtil {
+    public static final String TAG = "MyNotificationUtil";
 
     public static final int FLEX_SECONDS = 30;
+    public static final int FLEX_MILIS = 30000;
 
     public static final String CHANNEL_GROUP_NAME_TODO = "ToDo (All)";
     public static final String CHANNEL_GROUP_ID_TODO = "tk.httpksfdev.todo.notifications.channels.group.todo";
@@ -67,48 +68,46 @@ public class MyNotificationUtil {
 
     //[Schedule Notification]
     public static void scheduleNotification(Context mContext, @NonNull String entryId) {
-
         //get timeInSecond from db to schedule job
         Uri uri = ToDoContract.ToDoEntry.CONTENT_URI.buildUpon().appendPath(entryId).build();
         Cursor mCursor = mContext.getContentResolver().query(uri, null, null, null, null);
         if (mCursor == null) {
-            Log.d("TAG+++", "mCursor == null, no job scheduled");
+            Log.d(TAG, "mCursor == null, no job scheduled");
             return;
         } else if(mCursor.getCount() == 0){
-            Log.d("TAG+++", "mCursor.getCount() == 0, no job scheduled");
+            Log.d(TAG, "mCursor.getCount() == 0, no job scheduled");
             return;
         }
 
         mCursor.moveToFirst();
         long timeInMillis = mCursor.getLong(mCursor.getColumnIndex(ToDoContract.ToDoEntry.COLUMN_REMINDER));
         timeInMillis -= Calendar.getInstance().getTimeInMillis();
-        timeInMillis /= 1000;
-        int timeInSeconds = (int) timeInMillis;
 
-        if (timeInSeconds > 5) {
+        if (timeInMillis > 5000) {
             //schedule job
-            FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(mContext));
-            Job myJob = dispatcher.newJobBuilder()
-                    .setService(NotificationJobService.class)
-                    .setTag(entryId)        // uniquely identifies the job with entry id from database
-                    .setRecurring(false)
-                    .setLifetime(Lifetime.FOREVER)
-                    .setTrigger(Trigger.executionWindow(timeInSeconds, timeInSeconds + FLEX_SECONDS))
-                    .setReplaceCurrent(true)
-                    .setRetryStrategy(RetryStrategy.DEFAULT_LINEAR)
-                    .build();
+            PersistableBundleCompat extras = new PersistableBundleCompat();
+            extras.putString(NotificationJob.EXTRA_ENTRY_ID, entryId);
 
-            dispatcher.mustSchedule(myJob);
-            Log.d("TAG+++", "Job scheduled with " + timeInSeconds + " seconds");
-        } else {
+            int jobId = new JobRequest.Builder(NotificationJob.TAG)
+                    .setExecutionWindow(timeInMillis, timeInMillis + FLEX_MILIS)
+                    .setBackoffCriteria(FLEX_MILIS, JobRequest.BackoffPolicy.LINEAR)
+                    .setExtras(extras)
+                    .setUpdateCurrent(false)
+                    .build()
+                    .schedule();
+
+            //map jobId to entryId to enable cancel request
+            PreferenceManager.getDefaultSharedPreferences(mContext).edit().putInt(entryId, jobId).apply();
+            } else {
             //reminder probably -1
         }
     }
 
     //[Cancel Notification]
     public static void cancelNotification(Context mContext, @NonNull String entryId) {
-        FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(mContext));
-        dispatcher.cancel(entryId);
+        int jobId = PreferenceManager.getDefaultSharedPreferences(mContext).getInt(entryId, -1);
+        if(jobId != -1)
+            JobManager.instance().cancel(jobId);
     }
 
 
@@ -215,10 +214,10 @@ public class MyNotificationUtil {
         PendingIntent pendingIntentEdit = stackBuilder.getPendingIntent(notificationId, PendingIntent.FLAG_UPDATE_CURRENT);
 
         //action done
-        Intent intentDone = new Intent(context, ToDoClickIntentService.class);
+        Intent intentDone = new Intent(context, ToDoBroadcastReceiver.class);
         intentDone.setAction(ToDoClickIntentService.ACTION_CLICK_TODO_ITEM_DONE);
         intentDone.putExtra(ToDoClickIntentService.EXTRA_TODO_ITEM_ID, ""+id);
-        PendingIntent pendingIntentDone = PendingIntent.getService(context, notificationId, intentDone, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntentDone = PendingIntent.getBroadcast(context, notificationId, intentDone, PendingIntent.FLAG_UPDATE_CURRENT);
 
         //create notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, tempNotificationChannelId);

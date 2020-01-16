@@ -7,10 +7,9 @@
     <string name="info_text">This application is part of open source project and all additional informations can be found on official GitHub repository.</string>
 
     <!-- AddEntry / EditEntry -->
-    <string name="hint_text">example: Buy milk</string>
-    <string name="lorem_ipsum_text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec ... </string>
-    <string name="lorem_ipsum_text_short">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ... </string>
-
+    <string name="hint_text">Task name</string>
+    <string name="lorem_ipsum_text">More information</string>
+    <string name="lorem_ipsum_text_short">More information</string>
 
     <!-- Note widget -->
     <string name="widget_note_name">Click me</string>
@@ -19,5 +18,16 @@
     <!-- Shortcuts -->
     <string name="shortcut_todo_label">Add ToDo</string>
     <string name="shortcut_note_label">Add Note</string>
+
+    <string name="save">Save</string>
+    <string name="remind_me">Remind me</string>
+    <string name="priority">Priority:</string>
+    <string name="high">High</string>
+    <string name="medium">Medium</string>
+    <string name="low">Low</string>
+    <string name="more">More:</string>
+    <string name="choose_note">Choose note:</string>
+    <string name="done_items">Finished tasks and notes</string>
+    <string name="add_smile">Add :D</string>
 
 </resources>

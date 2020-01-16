@@ -6,15 +6,24 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.core.app.NavUtils;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -23,6 +32,8 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.Calendar;
 
 import tk.httpksfdev.todo.data.ToDoContract;
@@ -30,10 +41,14 @@ import tk.httpksfdev.todo.notifications.MyNotificationUtil;
 import tk.httpksfdev.todo.widgets.WidgetUtils;
 
 public class EditEntryActivity extends AppCompatActivity {
-
+    private ViewGroup rootLayout;
     private EditText editTextInfo;
     private EditText editTextDesc;
     private CheckBox reminderCheckBox;
+
+    private FloatingActionButton saveEntryFab;
+    private Button saveEntryButton;
+    private LinearLayout reminderLayout;
 
     private int mId;
     private String mInfo;
@@ -41,6 +56,38 @@ public class EditEntryActivity extends AppCompatActivity {
     private int mPriority;
     private long mReminder;
 
+    private boolean keyboardListenersAttached = false;
+    private boolean keyboardWasDisplayed = false;
+    private ViewTreeObserver.OnGlobalLayoutListener keyboardLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+        @Override
+        public void onGlobalLayout() {
+            // navigation bar height
+            int navigationBarHeight = 0;
+            int resourceId = getResources().getIdentifier("navigation_bar_height", "dimen", "android");
+            if (resourceId > 0) {
+                navigationBarHeight = getResources().getDimensionPixelSize(resourceId);
+            }
+
+            // status bar height
+            int statusBarHeight = 0;
+            resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+            if (resourceId > 0) {
+                statusBarHeight = getResources().getDimensionPixelSize(resourceId);
+            }
+
+            // display window size for the app layout
+            Rect rect = new Rect();
+            getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
+            int keyboardHeight = rootLayout.getRootView().getHeight() - (statusBarHeight + navigationBarHeight + rect.height());
+            if (keyboardHeight <= 0) {
+                if (keyboardWasDisplayed)
+                    onHideKeyboard();
+            } else {
+                if (!keyboardWasDisplayed)
+                    onShowKeyboard();
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +98,12 @@ public class EditEntryActivity extends AppCompatActivity {
         editTextDesc = findViewById(R.id.editentry_editTextDesc);
         reminderCheckBox = findViewById(R.id.editentry_checkbox_notification);
 
+        saveEntryFab = findViewById(R.id.editentry_save_fab);
+        saveEntryButton = findViewById(R.id.editentry_save_button);
+        reminderLayout = findViewById(R.id.editentry_reminder_layout);
+
         Intent intent = getIntent();
-        if(intent == null){
+        if (intent == null) {
             //won't happend
             Log.d("TAG+++", "No data passed to EditEntryActivity");
             finish();
@@ -64,7 +115,7 @@ public class EditEntryActivity extends AppCompatActivity {
         Uri uri = ToDoContract.ToDoEntry.CONTENT_URI.buildUpon().appendPath(id).build();
         Cursor mCursor = getContentResolver().query(uri, null, null, null, null);
 
-        if(mCursor == null || mCursor.getCount() == 0){
+        if (mCursor == null || mCursor.getCount() == 0) {
             //won't happend
             Log.d("TAG+++", "Wrong id passed to EditEntryActivity");
             finish();
@@ -75,7 +126,7 @@ public class EditEntryActivity extends AppCompatActivity {
         mId = Integer.valueOf(id);
         mInfo = mCursor.getString(mCursor.getColumnIndex(ToDoContract.ToDoEntry.COLUMN_INFO));
         mDesc = mCursor.getString(mCursor.getColumnIndex(ToDoContract.ToDoEntry.COLUMN_DESC));
-        mPriority =  mCursor.getInt(mCursor.getColumnIndex(ToDoContract.ToDoEntry.COLUMN_PRIORITY));
+        mPriority = mCursor.getInt(mCursor.getColumnIndex(ToDoContract.ToDoEntry.COLUMN_PRIORITY));
         mReminder = mCursor.getLong(mCursor.getColumnIndex(ToDoContract.ToDoEntry.COLUMN_REMINDER));
 
         //setUp UI
@@ -84,26 +135,68 @@ public class EditEntryActivity extends AppCompatActivity {
         //remove notification if still there
         MyNotificationUtil.removeNotification(this, mId);
 
+        attachKeyboardListener();
     }
 
+    private void attachKeyboardListener() {
+        if (keyboardListenersAttached) {
+            return;
+        }
+        rootLayout = (ViewGroup) findViewById(R.id.editentry_root);
+        rootLayout.getViewTreeObserver().addOnGlobalLayoutListener(keyboardLayoutListener);
+        keyboardListenersAttached = true;
+    }
 
-    public void onSaveButton(View v){
+    private void onShowKeyboard() {
+        saveEntryButton.setVisibility(View.GONE);
+        reminderLayout.setVisibility(View.GONE);
+
+        Animation animation = new AlphaAnimation(0, 1);
+        animation.setInterpolator(new DecelerateInterpolator()); //add this
+        animation.setDuration(500);
+        saveEntryFab.setAnimation(animation);
+        saveEntryFab.animate();
+
+        saveEntryFab.setVisibility(View.VISIBLE);
+
+        keyboardWasDisplayed = true;
+    }
+
+    private void onHideKeyboard() {
+        saveEntryFab.setVisibility(View.GONE);
+
+        Animation animation = new AlphaAnimation(0, 1);
+        animation.setInterpolator(new DecelerateInterpolator()); //add this
+        animation.setDuration(500);
+        saveEntryButton.setAnimation(animation);
+        saveEntryButton.animate();
+
+        reminderLayout.setAnimation(animation);
+        reminderLayout.animate();
+
+        saveEntryButton.setVisibility(View.VISIBLE);
+        reminderLayout.setVisibility(View.VISIBLE);
+
+        keyboardWasDisplayed = false;
+    }
+
+    public void onSaveButton(View v) {
         //update item
         mInfo = editTextInfo.getText().toString();
         mDesc = editTextDesc.getText().toString().trim();
 
-        if(mInfo.equals("")){
+        if (mInfo.equals("")) {
             //do nothing
             return;
         }
 
-        if(reminderCheckBox.isChecked()){
+        if (reminderCheckBox.isChecked()) {
             //get real reminder time
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             String[] date = sp.getString(MyUtils.PREF_DATE_TEMP, "null##").split("##");
             String[] time = sp.getString(MyUtils.PREF_TIME_TEMP, "null##").split("##");
 
-            if(date.length == 3 && time.length == 2){
+            if (date.length == 3 && time.length == 2) {
                 Calendar c2 = Calendar.getInstance();
                 c2.set(Calendar.YEAR, Integer.parseInt(date[0]));
                 c2.set(Calendar.MONTH, Integer.parseInt(date[1]));
@@ -113,9 +206,9 @@ public class EditEntryActivity extends AppCompatActivity {
                 mReminder = c2.getTimeInMillis();
                 Log.d("TAG+++", "mReminder: " + mReminder);
             }
-        } else{
+        } else {
             mReminder = -1;
-            MyNotificationUtil.cancelNotification(getApplicationContext(), ""+ mId);
+            MyNotificationUtil.cancelNotification(getApplicationContext(), "" + mId);
         }
 
         //update item in db
@@ -125,12 +218,12 @@ public class EditEntryActivity extends AppCompatActivity {
         cv.put(ToDoContract.ToDoEntry.COLUMN_PRIORITY, mPriority);
         cv.put(ToDoContract.ToDoEntry.COLUMN_REMINDER, mReminder);
 
-        Uri uri = ToDoContract.ToDoEntry.CONTENT_URI.buildUpon().appendPath(""+mId).build();
-        int num = getContentResolver().update(uri, cv, null, new String[]{""+mId});
+        Uri uri = ToDoContract.ToDoEntry.CONTENT_URI.buildUpon().appendPath("" + mId).build();
+        int num = getContentResolver().update(uri, cv, null, new String[]{"" + mId});
         Log.d("TAG+++", "Num: " + num);
 
         //reschedule job if notification is set
-        MyNotificationUtil.scheduleNotification(getApplicationContext(), ""+mId);
+        MyNotificationUtil.scheduleNotification(getApplicationContext(), "" + mId);
 
 
         //update widget
@@ -141,15 +234,15 @@ public class EditEntryActivity extends AppCompatActivity {
     }
 
 
-    public void onPriorityChanged(View v){
+    public void onPriorityChanged(View v) {
         int id = v.getId();
 
-        switch (id){
+        switch (id) {
             case R.id.editentry_radio1:
                 mPriority = 1;
                 break;
             case R.id.editentry_radio2:
-                mPriority =2;
+                mPriority = 2;
                 break;
             case R.id.editentry_radio3:
                 mPriority = 3;
@@ -159,11 +252,11 @@ public class EditEntryActivity extends AppCompatActivity {
         }
     }
 
-    private void setUpUi(){
+    private void setUpUi() {
         editTextInfo.setText(mInfo);
         editTextDesc.setText(mDesc);
 
-        switch (mPriority){
+        switch (mPriority) {
             case 1:
                 ((RadioButton) findViewById(R.id.editentry_radio1)).setChecked(true);
                 break;
@@ -174,13 +267,13 @@ public class EditEntryActivity extends AppCompatActivity {
                 ((RadioButton) findViewById(R.id.editentry_radio3)).setChecked(true);
                 break;
             case 5:
-                ((LinearLayout)findViewById(R.id.editentry_linearLayout)).setVisibility(View.GONE);
+                ((LinearLayout) findViewById(R.id.editentry_linearLayout)).setVisibility(View.GONE);
                 break;
         }
 
         //reminder setUp
         setUpReminder();
-        if(mReminder != -1){
+        if (mReminder != -1) {
             reminderCheckBox.setChecked(true);
             reminderCheckboxClickedEdit(reminderCheckBox);
         }
@@ -191,12 +284,12 @@ public class EditEntryActivity extends AppCompatActivity {
     //reminder methods
 
     //initial stuff for reminder, should be called only once
-    private void setUpReminder(){
+    private void setUpReminder() {
         final TextView dataTextView = (TextView) findViewById(R.id.editentry_datapicker_textview);
         final TextView timeTextView = (TextView) findViewById(R.id.editentry_timepicker_textview);
 
         Calendar calendar = Calendar.getInstance();
-        if(mReminder != -1 && (calendar.getTimeInMillis() - mReminder) < 0){
+        if (mReminder != -1 && (calendar.getTimeInMillis() - mReminder) < 0) {
             calendar.setTimeInMillis(mReminder);
         } else {
             calendar.setTimeInMillis(calendar.getTimeInMillis() + (1000 * 60 * 60));
@@ -258,12 +351,12 @@ public class EditEntryActivity extends AppCompatActivity {
         });
     }
 
-    public void reminderCheckboxClickedEdit(View v){
+    public void reminderCheckboxClickedEdit(View v) {
         TextView dataTextView = (TextView) findViewById(R.id.editentry_datapicker_textview);
         TextView timeTextView = (TextView) findViewById(R.id.editentry_timepicker_textview);
         TextView atTextView = (TextView) findViewById(R.id.editentry_textview03);
 
-        if(reminderCheckBox.isChecked()){
+        if (reminderCheckBox.isChecked()) {
             //show textviews
             dataTextView.setVisibility(View.VISIBLE);
             timeTextView.setVisibility(View.VISIBLE);
@@ -284,16 +377,17 @@ public class EditEntryActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.edit_menu, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == android.R.id.home){
+        if (item.getItemId() == android.R.id.home) {
             NavUtils.navigateUpFromSameTask(this);
-        } else if(item.getItemId() == R.id.edit_menu_done) {
+        } else if (item.getItemId() == R.id.edit_menu_done) {
             //set done icon
             item.setIcon(R.drawable.ic_done_02);
 
             //delete item from active pool
-            Uri uri = ToDoContract.ToDoEntry.CONTENT_URI.buildUpon().appendPath(""+ mId).build();
+            Uri uri = ToDoContract.ToDoEntry.CONTENT_URI.buildUpon().appendPath("" + mId).build();
             getContentResolver().delete(uri, null, null);
 
             //notify data change
