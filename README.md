@@ -23,12 +23,15 @@ ToDo / Note taking app with dark theme
 ~ Widget for active ToDos <br>
 ~ Widgets for selected Notes <br>
 ~ Time based reminders (Notifications) <br>
-~ Supports Android O (Notification Channels, Badges, App Shortcuts...)
+~ Supports Android O (Notification Channels, Badges, App Shortcuts...) <br>
+~ Database backups with Export/Import functionality
  
 
 ## Soon
+~ Migrate source code to Kotlin <br>
+~ Migrate application to MVVM architecture <br>
+~ Implement new design <br>
 ~ // <br>
-
 
 ### Please note
 Reminder feature uses Firebase JobDispatcher that: "_works on all recent versions of Android that have Google Play services installed._"
