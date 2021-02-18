@@ -3,13 +3,15 @@
     package="tk.httpksfdev.todo">
 
     <application
+        android:name=".TodoApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher_rounded"
         android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_rounded"
         android:supportsRtl="true"
-        android:name=".TodoApplication"
         android:theme="@style/AppTheme">
+        <activity android:name=".BackupActivity"/>
+
         <provider
             android:name=".data.ToDoContentProvider"
             android:authorities="tk.httpksfdev.todo.data"
@@ -38,31 +40,31 @@
                 android:resource="@xml/note_widget_info" />
         </receiver>
 
-
         <service
             android:name=".widgets.widget_todo.ToDoListViewService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 
-        <receiver android:name=".widgets.widget_todo.ToDoBroadcastReceiver"
+        <receiver
+            android:name=".widgets.widget_todo.ToDoBroadcastReceiver"
             android:enabled="true"
-            android:exported="true"/>
+            android:exported="true" />
 
-        <service android:name=".widgets.widget_todo.ToDoClickIntentService"
-            android:permission="android.permission.BIND_JOB_SERVICE"
-            android:exported="true"
-            android:enabled="true"/>
-
-
-        <receiver android:name=".widgets.widget_note.NoteBroadcastReceiver"
-            android:exported="true"
+        <service
+            android:name=".widgets.widget_todo.ToDoClickIntentService"
             android:enabled="true"
-            />
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <receiver
+            android:name=".widgets.widget_note.NoteBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true" />
+
         <service
             android:name=".widgets.widget_note.NoteIntentService"
-            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:enabled="true"
             android:exported="true"
-            android:enabled="true"/>
-
+            android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -70,30 +72,28 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <meta-data android:name="android.app.shortcuts"
+
+            <meta-data
+                android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
         </activity>
         <activity
             android:name=".AddEntryActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"
             android:configChanges="orientation|keyboardHidden"
-            />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".EditEntryActivity"
+            android:configChanges="orientation|keyboardHidden"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"
-            android:configChanges="orientation|keyboardHidden"
-            />
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".widgets.widget_note.ChooseNoteForWidgetActivity"
-            android:theme="@style/ChooseNoteForWidgetTheme"
+            android:excludeFromRecents="true"
             android:launchMode="singleTask"
             android:taskAffinity=""
-            android:excludeFromRecents="true"
-            />
-
+            android:theme="@style/ChooseNoteForWidgetTheme" />
     </application>
 
 </manifest>
