@@ -211,31 +211,37 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        //check API level
-        int theme = -1;
-        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
-            theme = android.R.style.Theme_Material_Dialog_NoActionBar;
-        } else{
-            //doesn't support cool theme :|
-            theme = android.R.style.Theme_Holo_Dialog_NoActionBar;
+        if(R.id.main_menu_export == item.getItemId()){
+            startActivity(new Intent(MainActivity.this, BackupActivity.class));
+        } else {
+            //Info option
+            //check API level
+            int theme = -1;
+            if(Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
+                theme = android.R.style.Theme_Material_Dialog_NoActionBar;
+            } else{
+                //doesn't support cool theme :|
+                theme = android.R.style.Theme_Holo_Dialog_NoActionBar;
+            }
+            new AlertDialog.Builder(this, theme)
+                    .setTitle("\tAbout")
+                    .setMessage(getResources().getString(R.string.info_text) + "\n\nCreated by: Petar Suvajac")
+                    .setPositiveButton("Ok", null)
+                    .setNegativeButton("GitHub", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            goToGithub();
+                        }
+                    })
+                    .setNeutralButton("Send email", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            sendMeEmail();
+                        }
+                    })
+                    .show();
         }
-        new AlertDialog.Builder(this, theme)
-                .setTitle("\tAbout")
-                .setMessage(getResources().getString(R.string.info_text) + "\n\nCreated by: Petar Suvajac")
-                .setPositiveButton("Ok", null)
-                .setNegativeButton("GitHub", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        goToGithub();
-                    }
-                })
-                .setNeutralButton("Send email", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        sendMeEmail();
-                    }
-                })
-                .show();
+
 
         return true;
     }
@@ -264,7 +270,7 @@ public class MainActivity extends AppCompatActivity implements
         } else {
             Toast.makeText(getApplicationContext(), "Visit us at: " + gitUrl, Toast.LENGTH_LONG).show();
         }
-
-
     }
+
+
 }

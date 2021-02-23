@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/main_menu_export"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_import_export"
+        />
+
+    <item
         android:id="@+id/main_menu_about"
         app:showAsAction="always"
         android:icon="@drawable/ic_info"

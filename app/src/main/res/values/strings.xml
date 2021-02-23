@@ -30,4 +30,11 @@
     <string name="done_items">Finished tasks and notes</string>
     <string name="add_smile">Add :D</string>
 
+    <string name="backup_info">Create a complete backup of your database, export it to device and import it if needed (on this or another device). You have complete
+    control over backup files created with Export option and application doesn\'t require Storage permission for Export/Import functionality</string>
+    <string name="create_file_failed">File couldn\'t be created, please try again</string>
+    <string name="write_to_file_failed">Write to database backup file failed, please try again</string>
+    <string name="db_backup_success">Database backup created successfully</string>
+    <string name="select_file_failed">File couldn\'t be selected, please try again</string>
+    <string name="db_import_success">Database backup imported successfully</string>
 </resources>
